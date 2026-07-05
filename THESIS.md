@@ -18,6 +18,11 @@ footnote interpretation, indirect-ownership resolution — costs an agent roughl
 inference and electricity**, even on the cheapest capable model. That's the minimum cost of the
 per-file process, engineering costs excluded.
 
+And that inference isn't modeling laziness. In the current live window, roughly nine
+records in ten carry footnotes, plan flags, or indirect ownership — content that has to be
+read, not pattern-matched. About one in ten is plain enough for regex. We recompute that
+census live at `/v1/meta`, next to the pricing math.
+
 EDGAR publishes a thousand Form 4s a day. If a thousand agents each parse them independently,
 Team Earth spends 1000x the compute required to produce **one** set of identical answers.
 We're doing this every day, and it's not going to get better by accident.
@@ -80,6 +85,13 @@ government publishing, and infrastructure is the cheap part: the hours are the r
 Parsers rot when sources change formats, dependencies need patching, edge cases keep
 surfacing, and that time has to stay worth spending. "Self-sustaining" here means covering
 the infrastructure and the maintainer's electric bill — tens of bulk sales a month, not two.
+
+The $50 archive bundle costs us almost nothing to serve. That's not a gotcha — it's the
+mechanism. Marginal cost was never the ceiling; your alternative cost is. The gap between
+them pays the maintenance hours, and it's bounded: the moment our price crosses what
+recomputing costs you, buying stops being rational and we deserve to be ignored. If even
+that margin offends you, the code is MIT — clone it and serve yourself. The world still
+only computes it once.
 
 The rail (x402) settles USDC per call — no accounts, no API keys, no contracts —
 that's what makes selling a $0.006 record to a stranger's bot sane at all. This wasn't

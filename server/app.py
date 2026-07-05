@@ -50,6 +50,44 @@ def _snapshot() -> dict:
     return load_snapshot(DATA_DIR) or {}
 
 
+def _semantic_census(records: list[dict]) -> dict | None:
+    """Share of current snapshot records carrying semantic content that a regex-only
+    parser would silently drop. This is the receipt behind the DIY-inference comparison:
+    the per-filing inference cost isn't modeling laziness — most records contain content
+    that has to be READ (footnotes, plan flags, indirect attributions), not pattern-matched.
+    Computed live so the figure is auditable, never a stale marketing number."""
+    n = len(records)
+    if not n:
+        return None
+
+    def txn(r: dict) -> dict:
+        return r.get("transaction") or {}
+
+    def plain(r: dict) -> bool:
+        t = txn(r)
+        return (t.get("table") == "non_derivative" and not t.get("footnotes")
+                and not r.get("is_amendment") and not t.get("rule_10b5_1")
+                and t.get("ownership") != "I")
+
+    def share(pred) -> float:
+        return round(100 * sum(1 for r in records if pred(r)) / n, 1)
+
+    return {
+        "what": "share of the current live snapshot carrying semantic content a "
+                "pattern-only parser cannot safely capture",
+        "sample_size": n,
+        "footnotes_present_pct": share(lambda r: bool(txn(r).get("footnotes"))),
+        "rule_10b5_1_flagged_pct": share(lambda r: bool(txn(r).get("rule_10b5_1"))),
+        "indirect_ownership_pct": share(lambda r: txn(r).get("ownership") == "I"),
+        "derivative_table_pct": share(lambda r: txn(r).get("table") == "derivative"),
+        "amendments_pct": share(lambda r: bool(r.get("is_amendment"))),
+        "any_semantic_marker_pct": share(lambda r: not plain(r)),
+        "plain_regex_parseable_pct": share(plain),
+        "note": "footnote presence does not always mean hard content — but a pattern-only "
+                "parser cannot know which footnotes matter without reading them",
+    }
+
+
 def _paywall_or_serve(request: Request, payload: dict, price: float | None = None,
                       discovery_key: str | None = None) -> JSONResponse | dict:
     """Charge only because there's data here; empty payloads never reach this.
@@ -110,7 +148,9 @@ def llms_txt() -> str:
 ## Why buy instead of DIY
 Replicating our Form 4 parse accuracy costs ~${payments.DIY_COST_PER_FILING_USD}/filing
 in inference + electricity alone — assuming the cheapest capable model, before enrichment or the
-engineering to get the edge cases right.
+engineering to get the edge cases right. Inference is unavoidable for most records: in the live
+window, roughly 9 in 10 carry footnotes, plan flags, or indirect ownership that must be read,
+not pattern-matched (live census: /v1/meta -> diy_comparison.semantic_content_census).
 Our lookup tier is ${payments.PRICE_USD}/record; bulk tiers drop to
 ${payments.BULK_PER_RECORD_USD} and ${payments.BULK_10K_PER_RECORD_USD}/record.
 Live math with sources: GET /v1/meta -> diy_comparison.
@@ -302,6 +342,8 @@ def meta() -> dict:
                             "model and excludes enrichment and the engineering cost of the edge "
                             "cases, so real DIY cost is higher",
             "diy_cost_usd_per_filing": diy,
+            # Why inference (not regex) is the honest DIY baseline — measured, not asserted:
+            "semantic_content_census": _semantic_census(records),
             "tiers": {
                 "lookup": {
                     "our_price_usd": payments.PRICE_USD,

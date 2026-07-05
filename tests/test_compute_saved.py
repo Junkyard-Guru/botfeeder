@@ -101,6 +101,20 @@ def test_endpoint_is_free_and_shaped(monkeypatch, tmp_path):
     assert "undercounts" in joined or "never overcounts" in joined
 
 
+def test_meta_carries_semantic_census():
+    """The census is the receipt behind the DIY-inference baseline — it must ship in meta
+    (or be explicitly None when the snapshot is empty), never silently vanish."""
+    body = client.get("/v1/meta").json()
+    assert "semantic_content_census" in body["diy_comparison"]
+    census = body["diy_comparison"]["semantic_content_census"]
+    if census is not None:  # test env may run with an empty snapshot
+        assert set(census) >= {"footnotes_present_pct", "rule_10b5_1_flagged_pct",
+                               "indirect_ownership_pct", "any_semantic_marker_pct",
+                               "plain_regex_parseable_pct", "sample_size"}
+        total = census["any_semantic_marker_pct"] + census["plain_regex_parseable_pct"]
+        assert 99.0 <= total <= 101.0  # complementary shares, rounding slack
+
+
 def test_page_advertises_the_counter():
     from pathlib import Path
     page = (Path(__file__).parent.parent / "web" / "index.html").read_text(encoding="utf-8")

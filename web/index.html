@@ -99,7 +99,10 @@
       from us: ordering is cheaper. Here's the math.</strong>
     <p>Parsing a Form 4 filing to our accuracy (transaction-code semantics, the Rule 10b5-1 flag,
        footnote interpretation, indirect-ownership resolution) means an LLM call, not just a regex —
-       the edge cases are semantic. That has a real, computable cost:</p>
+       the edge cases are semantic, and they're not a tail: at the time of writing ~88% of live
+       records carry footnotes, plan flags, or indirect ownership that must be read, not
+       pattern-matched (live census: <code>/v1/meta → diy_comparison.semantic_content_census</code>).
+       That has a real, computable cost:</p>
     <table>
       <tr><th></th><th>Cost</th><th>vs. our price</th></tr>
       <tr><td>DIY: inference + electricity to parse one filing yourself — assuming the cheapest

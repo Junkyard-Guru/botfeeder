@@ -1,0 +1,14 @@
+# systemd service (oneshot) — weekly heartbeat self-purchase (scripts/heartbeat_buy.py).
+# Keeps the CDP Bazaar listing active (settlement-triggered indexing, ~30-day activity window)
+# and end-to-end probes storefront -> 402 -> facilitator -> settlement.
+# Secrets: /etc/feedface/heartbeat.env holds FEEDFACE_HEARTBEAT_BUYER_KEY (root:root 600).
+[Unit]
+Description=FEEDFACE heartbeat — weekly self-purchase to keep discovery listings alive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/feedface
+EnvironmentFile=/etc/feedface/heartbeat.env
+ExecStart=/opt/feedface/.venv/bin/python scripts/heartbeat_buy.py

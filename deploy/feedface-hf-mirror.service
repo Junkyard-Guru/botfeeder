@@ -1,0 +1,13 @@
+# systemd service (oneshot) — weekly Hugging Face archive mirror (scripts/export_hf_mirror.py).
+# Publishes archive days >30 days old; the live edge stays paid. No-op until HF_TOKEN is
+# present in /etc/feedface/hf.env (root:root 600) and days have aged past the lag.
+[Unit]
+Description=FEEDFACE HF mirror — publish lagged archive slice to Hugging Face
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/feedface
+EnvironmentFile=-/etc/feedface/hf.env
+ExecStart=/opt/feedface/.venv/bin/python scripts/export_hf_mirror.py

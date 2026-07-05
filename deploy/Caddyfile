@@ -1,0 +1,8 @@
+# Caddy reverse proxy — automatic TLS for the storefront.
+# Install at /etc/caddy/Caddyfile on the VPS (docs/05 Phase 4).
+# DNS prereq: botfeeder.junkyard.guru -> VPS IP (confirm junkyard.guru registrar/DNS).
+
+botfeeder.junkyard.guru {
+	encode gzip
+	reverse_proxy 127.0.0.1:8080
+}

@@ -1,0 +1,11 @@
+# systemd service (oneshot) — one EDGAR production cycle. Fired by the .timer.
+[Unit]
+Description=FEEDFACE producer — one EDGAR Form 4 production cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/feedface
+ExecStart=/opt/feedface/.venv/bin/python -m producer.main
+# On failure: the previous snapshot stays in place (last-good); the server keeps serving.

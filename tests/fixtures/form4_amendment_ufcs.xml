@@ -1,0 +1,690 @@
+<?xml version="1.0"?>
+<ownershipDocument>
+
+    <schemaVersion>X0303</schemaVersion>
+
+    <documentType>4/A</documentType>
+
+    <periodOfReport>2008-09-18</periodOfReport>
+
+    <dateOfOriginalSubmission>2009-03-02</dateOfOriginalSubmission>
+
+    <notSubjectToSection16>0</notSubjectToSection16>
+
+    <issuer>
+        <issuerCik>0000101199</issuerCik>
+        <issuerName>UNITED FIRE &amp; CASUALTY CO</issuerName>
+        <issuerTradingSymbol>UFCS</issuerTradingSymbol>
+    </issuer>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001451189</rptOwnerCik>
+            <rptOwnerName>ERNST BARRIE W</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>118 SECOND AVENUE SE</rptOwnerStreet1>
+            <rptOwnerStreet2>P.O. BOX 73909</rptOwnerStreet2>
+            <rptOwnerCity>CEDAR RAPIDS</rptOwnerCity>
+            <rptOwnerState>IA</rptOwnerState>
+            <rptOwnerZipCode>52407-3909</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>1</isOfficer>
+            <isTenPercentOwner>0</isTenPercentOwner>
+            <isOther>0</isOther>
+            <officerTitle>VP/Chief Investment Officer</officerTitle>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <nonDerivativeTable>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-09-17</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2008-09-18</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>S</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>119</value>
+                    <footnoteId id="F2"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>25.61</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>D</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>6743</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F5"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-09-19</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate></deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>S</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>171</value>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>35.05</value>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>D</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>6572</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F6"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>As custodian for daughter</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-09-19</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2008-09-22</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>S</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>2048</value>
+                    <footnoteId id="F7"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>35.10</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>D</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>4526</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F8"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-11-04</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2008-11-05</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>365</value>
+                    <footnoteId id="F9"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>23.59</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>4909</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F10"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-11-19</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate></deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>500</value>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>16.50</value>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5409</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F11"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) for spouse</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-11-19</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate></deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>200</value>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>16.50</value>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5609</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F12"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>As custodian for daughter</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-11-20</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2008-11-21</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>1003</value>
+                    <footnoteId id="F13"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>13.53</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>6638</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F14"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2008-12-16</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2008-12-17</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>S</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>959</value>
+                    <footnoteId id="F15"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>25.52</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>D</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5650</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F16"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2009-01-15</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2009-01-16</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>29</value>
+                    <footnoteId id="F17"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>24.78</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5682</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F18"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2009-02-04</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2009-02-05</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>34</value>
+                    <footnoteId id="F19"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>21.46</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5665</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F20"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2009-02-16</value>
+                <footnoteId id="F1"/>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2009-02-17</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>33</value>
+                    <footnoteId id="F21"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>21.85</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>5761</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F22"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2009-02-26</value>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2009-02-27</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>918</value>
+                    <footnoteId id="F23"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>17.48</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>6697</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F24"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2009-02-27</value>
+            </transactionDate>
+            <deemedExecutionDate>
+                <value>2009-03-02</value>
+            </deemedExecutionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionTimeliness>
+                <value></value>
+            </transactionTimeliness>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>44</value>
+                    <footnoteId id="F25"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>16.96</value>
+                    <footnoteId id="F3"/>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>A</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>6748</value>
+                    <footnoteId id="F4"/>
+                    <footnoteId id="F26"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>I</value>
+                </directOrIndirectOwnership>
+                <natureOfOwnership>
+                    <value>By 401(k) Plan for self</value>
+                </natureOfOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+    </nonDerivativeTable>
+
+    <footnotes>
+        <footnote id="F1">This transaction reported pursuant to Rule 16a-2(a) under the Securities Exchange Act of 1934 (&quot;'34 Act&quot;) requiring the reporting of any transaction occurring within six months of a director or officer becoming subject to the requirements of Section 16 of the '34 Act.  Mr. Ernst became subject to Section 16 of the '34 Act on February 25, 2009.</footnote>
+        <footnote id="F2">Approximately 119 shares disposed of by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F3">The price per share represents the market price on the deemed execution date of the transaction as reported by the trustee of the Company 401(k) plan.</footnote>
+        <footnote id="F4">The number of securities shown as being held in or acquired or disposed of by the Company 401(k) account for Mr. Ernst's benefit is the approximate number of shares of common stock for which Mr. Ernst has the right to direct the vote under the 401(k) plan.  Such shares are not directly allocated to plan participants, but are instead held in a unitized fund consisting primarily of common stock, together with a small percentage of short-term investments.  Participants acquire units of this fund.</footnote>
+        <footnote id="F5">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; 171 shares held as custodian for Mr. Ernst's daughter; and approximately 4,412 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee.</footnote>
+        <footnote id="F6">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; and approximately 4,412 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee.</footnote>
+        <footnote id="F7">Approximately 2,048 shares disposed of by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F8">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; and approximately 2,366 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee.</footnote>
+        <footnote id="F9">Approximately 365 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F10">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; and approximately 2,749 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee.</footnote>
+        <footnote id="F11">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,749 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; and 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse.</footnote>
+        <footnote id="F12">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,749 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F13">Approximately 1,003 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F14">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 3,778 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F15">Approximately 959 shares disposed of by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F16">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,790 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F17">Approximately 29 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F18">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,822 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F19">Approximately 34 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F20">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,805 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F21">Approximately 33 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F22">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 2,901 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F23">Approximately 918 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F24">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 3,837 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+        <footnote id="F25">Approximately 44 shares acquired by the trustee of the Company 401(k) account for Mr. Ernst's benefit, based on a statement of the trustee.</footnote>
+        <footnote id="F26">The number of securities beneficially held includes: 1,944 shares of restricted stock issued under the Company's 2008 Stock Plan, which vest, subject to certain conditions, on 05/21/2013; 216 shares held in the Company's Employee Stock Ownership Plan for Mr. Ernst's benefit; approximately 3,888 shares held in a Company 401(k) account for Mr. Ernst's benefit, based on a statement of the plan trustee dated 02/27/2009; 500 shares held in an individual retirement account for the benefit of Mr. Ernst's spouse; and 200 shares held as custodian for Mr. Ernst's daughter.</footnote>
+    </footnotes>
+
+    <remarks>This amendment is filed to explain the unitized nature of the shares held for Mr. Ernst's benefit in the Company 401(k) account; to disclose the stock price of the transactions that reflect acquisitions and dispositions of unitized shares in the Company 401(k) account; to reflect six months of 401(k) account transactions as required by Rule 16a-2(a) under the Securities Exchange Act of 1934; to correct omisisons from the previous Form 4; to reflect the correct number of shares beneficially owned after each of the reported transactions; to correct the approximate number of shares acquired on February 26, 2009; and to reflect the cancellation of two sales initially reported to have occurred on December 19, 2008, which sales were cancelled on March 31, 2009, effective December 19, 2008.</remarks>
+
+    <ownerSignature>
+        <signatureName>/a/ Barrie W. Ernst</signatureName>
+        <signatureDate>2009-05-06</signatureDate>
+    </ownerSignature>
+</ownershipDocument>

@@ -1,0 +1,13 @@
+# systemd timer — weekly heartbeat purchase, Mondays 13:07 UTC (odd minute to avoid
+# thundering-herd top-of-hour load on the facilitator; Persistent=true catches missed runs
+# after downtime). enable with: systemctl enable --now feedface-heartbeat.timer
+[Unit]
+Description=FEEDFACE heartbeat cadence (weekly)
+
+[Timer]
+OnCalendar=Mon *-*-* 13:07:00 UTC
+Persistent=true
+RandomizedDelaySec=15min
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,31 @@
+{
+  "_fixture_note": "HAND-CONSTRUCTED to match the Consolidated Screening List API's documented response schema (https://developer.trade.gov/consolidated-screening-list.html). NOT a captured live response — no DATA_GOV_API_KEY was available at build time. The 'source' field value 'Entity List' for BIS entries is an assumption per the module docstring TODO, unverified against a live sample.",
+  "total": 3,
+  "results": [
+    {
+      "name": "Example Sanctioned Entity LLC",
+      "source": "Entity List",
+      "federal_register_notice": "91 FR 12345",
+      "start_date": "2026-01-15",
+      "addresses": [
+        {"address": "123 Example Street", "city": "Anytown", "country": "China"}
+      ]
+    },
+    {
+      "name": "Another Restricted Party Co",
+      "source": "Entity List",
+      "federal_register_notice": "91 FR 54321",
+      "start_date": "2026-02-01",
+      "addresses": [
+        {"address": "456 Sample Ave", "city": "Someplace", "country": "Russia"}
+      ]
+    },
+    {
+      "name": "Unrelated SDN Entry",
+      "source": "SDN",
+      "federal_register_notice": null,
+      "start_date": null,
+      "addresses": []
+    }
+  ]
+}

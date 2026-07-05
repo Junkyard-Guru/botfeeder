@@ -1,0 +1,13 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "guru.junkyard.botfeeder/the-junkyard",
+  "description": "Parsed public-domain market data for AI agents, priced below DIY inference cost, paid via x402.",
+  "version": "1.0.0",
+  "websiteUrl": "https://botfeeder.junkyard.guru",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://botfeeder.junkyard.guru/mcp"
+    }
+  ]
+}

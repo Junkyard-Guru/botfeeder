@@ -1,0 +1,12 @@
+# systemd timer — runs the producer every ~5 min (cadence lever, docs/03).
+# enable with: systemctl enable --now feedface-producer.timer
+[Unit]
+Description=FEEDFACE producer cadence (~5 min)
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

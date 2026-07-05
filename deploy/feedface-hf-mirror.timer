@@ -1,0 +1,12 @@
+# systemd timer — weekly HF mirror, Tuesdays 04:17 UTC.
+# enable with: systemctl enable --now feedface-hf-mirror.timer
+[Unit]
+Description=FEEDFACE HF mirror cadence (weekly)
+
+[Timer]
+OnCalendar=Tue *-*-* 04:17:00 UTC
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

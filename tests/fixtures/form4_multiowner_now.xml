@@ -1,0 +1,323 @@
+<?xml version="1.0"?>
+<ownershipDocument>
+
+    <schemaVersion>X0306</schemaVersion>
+
+    <documentType>4</documentType>
+
+    <periodOfReport>2013-02-13</periodOfReport>
+
+    <notSubjectToSection16>0</notSubjectToSection16>
+
+    <issuer>
+        <issuerCik>0001373715</issuerCik>
+        <issuerName>ServiceNow, Inc.</issuerName>
+        <issuerTradingSymbol>NOW</issuerTradingSymbol>
+    </issuer>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562073</rptOwnerCik>
+            <rptOwnerName>JMI Equity Fund IV Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE</rptOwnerStreet1>
+            <rptOwnerStreet2>SUITE 19100</rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562072</rptOwnerCik>
+            <rptOwnerName>JMI Associates IV Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562074</rptOwnerCik>
+            <rptOwnerName>JMI Equity Fund IV (AI) Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562086</rptOwnerCik>
+            <rptOwnerName>JMI Associates IV (AI) Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562075</rptOwnerCik>
+            <rptOwnerName>JMI Euro Equity Fund IV Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState></rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562120</rptOwnerCik>
+            <rptOwnerName>JMI Associates Euro IV Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562129</rptOwnerCik>
+            <rptOwnerName>JMI Equity Fund V Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562173</rptOwnerCik>
+            <rptOwnerName>JMI Associates V Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562133</rptOwnerCik>
+            <rptOwnerName>JMI Equity Fund V (AI) Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0001562126</rptOwnerCik>
+            <rptOwnerName>JMI Associates V (AI) Trust</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerAddress>
+            <rptOwnerStreet1>100 INTERNATIONAL DRIVE, SUITE 19100</rptOwnerStreet1>
+            <rptOwnerStreet2></rptOwnerStreet2>
+            <rptOwnerCity>BALTIMORE</rptOwnerCity>
+            <rptOwnerState>MD</rptOwnerState>
+            <rptOwnerZipCode>21202</rptOwnerZipCode>
+            <rptOwnerStateDescription></rptOwnerStateDescription>
+        </reportingOwnerAddress>
+        <reportingOwnerRelationship>
+            <isDirector>0</isDirector>
+            <isOfficer>0</isOfficer>
+            <isTenPercentOwner>1</isTenPercentOwner>
+            <isOther>0</isOther>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+
+    <nonDerivativeTable>
+        <nonDerivativeTransaction>
+            <securityTitle>
+                <value>Common Stock</value>
+            </securityTitle>
+            <transactionDate>
+                <value>2013-02-13</value>
+            </transactionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>J</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionAmounts>
+                <transactionShares>
+                    <value>8958602</value>
+                    <footnoteId id="F1"/>
+                    <footnoteId id="F2"/>
+                </transactionShares>
+                <transactionPricePerShare>
+                    <value>0</value>
+                </transactionPricePerShare>
+                <transactionAcquiredDisposedCode>
+                    <value>D</value>
+                </transactionAcquiredDisposedCode>
+            </transactionAmounts>
+            <postTransactionAmounts>
+                <sharesOwnedFollowingTransaction>
+                    <value>21845887</value>
+                    <footnoteId id="F3"/>
+                </sharesOwnedFollowingTransaction>
+            </postTransactionAmounts>
+            <ownershipNature>
+                <directOrIndirectOwnership>
+                    <value>D</value>
+                </directOrIndirectOwnership>
+            </ownershipNature>
+        </nonDerivativeTransaction>
+    </nonDerivativeTable>
+
+    <footnotes>
+        <footnote id="F1">Represents (i) 1,329,677 shares of the Issuer's common stock (&quot;Common Stock&quot;) distributed by JMI Equity Fund IV Trust (&quot;Fund IV Trust&quot;) and 332,419 shares of Common Stock distributed by JMI Associates IV Trust (&quot;GP IV Trust&quot;) to the beneficiaries of Fund IV Trust and GP IV Trust, respectively, on February 13, 2013, (ii) 105,297 shares of Common Stock distributed by JMI Equity Fund IV (AI) Trust (&quot;Fund IV (AI) Trust&quot;) and 26,324 shares of Common Stock distributed by JMI Associates IV (AI) Trust (&quot;GP IV (AI) Trust&quot;) to the beneficiaries of Fund IV (AI) Trust and GP IV (AI) Trust, respectively, on February 13, 2013, (iii) 424,585 shares of Common Stock distributed by JMI Euro Equity Fund IV Trust (&quot;Euro Fund Trust&quot;) and 106,146 shares of Common Stock distributed by JMI Associates Euro IV Trust (&quot;Euro GP Trust&quot;) to the beneficiaries of Euro Fund Trust and Euro GP Trust, respectively, on February 13, 2013, (Continued in footnote 2)</footnote>
+        <footnote id="F2">(iv) 5,016,759 shares of Common Stock distributed by JMI Equity Fund V Trust (&quot;Fund V Trust&quot;) and 1,254,189 shares of Common Stock distributed by JMI Associates V Trust (&quot;GP V Trust&quot;) to the beneficiaries of Fund V Trust and GP V Trust, respectively, on February 13, 2013, and (v) 290,565 shares of Common Stock distributed by JMI Equity Fund V (AI) Trust (&quot;Fund V (AI) Trust&quot;) and 72,641 shares of Common Stock distributed by JMI Associates V (AI) Trust (&quot;GP V (AI) Trust&quot;) to the beneficiaries of Fund V (AI) Trust and GP V (AI) Trust, respectively, on February 13, 2013.  Each such distribution described herein (collectively, the &quot;Distributions&quot;) was made for no consideration, and was made simultaneously with each of the other distributions described in this footnote and footnote (1).</footnote>
+        <footnote id="F3">Immediately following the Distributions, (i) Fund IV Trust owns an aggregate of 3,242,469 shares of Common Stock and GP IV Trust owns an aggregate of 810,617 shares of Common Stock, (ii) Fund IV (AI) Trust owns an aggregate of 256,769 shares of Common Stock and GP IV (AI) Trust owns an aggregate of 64,192 shares of Common Stock, (iii) Euro Fund Trust owns an aggregate of 1,035,366 shares of Common Stock and Euro GP Trust owns an aggregate of 258,842 shares of Common Stock, (iv) Fund V Trust owns an aggregate of 12,233,551 shares of Common Stock and GP V Trust owns an aggregate of 3,058,388 shares of Common Stock, and (v) Fund V (AI) Trust owns an aggregate of 708,554 shares of Common Stock and GP V (AI) Trust owns an aggregate of 177,139 shares of Common Stock.</footnote>
+    </footnotes>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Equity Fund IV Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Associates IV Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Equity Fund IV (AI) Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Associates IV (AI) Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Euro Equity Fund IV Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Associates Euro IV Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Equity Fund V Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Associates V Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Equity Fund V (AI) Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+
+    <ownerSignature>
+        <signatureName>/s/ Harry S. Gruner, as Trustee, JMI Associates V (AI) Trust</signatureName>
+        <signatureDate>2013-02-15</signatureDate>
+    </ownerSignature>
+</ownershipDocument>

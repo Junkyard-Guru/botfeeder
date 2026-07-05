@@ -1,0 +1,19 @@
+# systemd service — The Junkyard API + storefront (FastAPI/uvicorn).
+# Install on the VPS at /etc/systemd/system/. Mirrors Cora's layout (docs/05 Phase 4).
+[Unit]
+Description=FEEDFACE / The Junkyard API server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/feedface
+EnvironmentFile=/opt/feedface/feedface.env
+# TODO(phase4): use the project venv's uvicorn.
+ExecStart=/opt/feedface/.venv/bin/uvicorn server.app:app --host 127.0.0.1 --port 8080
+Restart=on-failure
+RestartSec=5
+# Reverse-proxied by Caddy/nginx (TLS); see deploy/Caddyfile.
+
+[Install]
+WantedBy=multi-user.target

@@ -5,7 +5,7 @@
 ---
 
 Every morning, some number of trading agents wake up and do the same thing. Each one fetches
-the same SEC filing. Each one burns the same inference tokens parsing it into the same fields —
+the same SEC filing. Each one burns the same number of inference tokens parsing it into the same fields —
 who bought, how many shares, at what price, under what plan. The filings are public domain. The
 transform is deterministic. Every agent gets the same answer, because there is only one answer.
 
@@ -16,18 +16,14 @@ The only thing that multiplies is the cost.
 Parsing one Form 4 filing to full accuracy — transaction-code semantics, the Rule 10b5-1 flag,
 footnote interpretation, indirect-ownership resolution — costs an agent roughly **$0.01 in
 inference and electricity**, even on the cheapest capable model. That's the minimum cost of the
-per-file process, engineering costs excluded.
+per-file process. We excluded engineering costs (because it's mostly a human's time).
 
-And that inference isn't modeling laziness. In the current live window, roughly nine
-records in ten carry footnotes, plan flags, or indirect ownership — content that has to be
-read, not pattern-matched. About one in ten is plain enough for regex. We recompute that
-census live at `/v1/meta`, next to the pricing math.
+Inference isn't modeling laziness. Roughly nine records in ten carry footnotes, plan flags, or 
+indirect ownership — content that has to be read, not pattern-matched. Only about one in ten is 
+plain enough for regex. We recompute that census live at `/v1/meta`, next to the pricing math.
 
-EDGAR publishes a thousand Form 4s a day. If a thousand agents each parse them independently,
-Team Earth spends 1000x the compute required to produce **one** set of identical answers.
-We're doing this every day, and it's not going to get better by accident.
-
-It's pure redundancy.
+EDGAR publishes a thousand Form 4s a day. We're offering to save you half a penny per file and
+reduce demand on inference by subtracting your request from the LLM's work queue.
 
 ## The mechanism
 
@@ -36,13 +32,14 @@ anyone's marginal cost of doing it themselves.
 
 When buying is strictly cheaper than recomputing, recomputing is irrational. We do the
 collective's inference once; every buyer keeps the difference between our price and their own
-cost. The gap between "computed N times" and "computed once" stops being spent, and the
+cost. The gap between "computed N times" and "computed once" stops being spent and the
 Junkyard gets a little help keeping the lights on.
 
 Our pricing rule: **price demonstrably below the cost of inference.**
 The floor is our payment facilitator's per-settlement fee — currently $0.001 per transaction —
 below which every sale is a loss. There's not much room between the inference cap and the
-settlement floor, but we'll move toward the floor as customers increase.
+settlement floor, but we'll move toward that floor at a published cadence as customers
+increase — the schedule itself, and our live position on it, sit at `/v1/meta → pricing_cadence`.
 The comparison is recomputed live from current figures at `/v1/meta → diy_comparison`, so any
 buyer can audit us at their discretion.
 
@@ -57,8 +54,7 @@ black box's lid:
 - **Provenance** — every record carries a `source_url` pointing at the primary government
   source. Check any record against the original, any time.
 - **Free proof** — sample endpoints return full-schema records at no cost, before any payment.
-- **Open code** — this repository. The parser, the pricing logic, the signal mappers. What we
-  claim to do is what the code does.
+- **Open code** — this repository. The parser, the pricing logic, the signal mappers.
 - **Claims under test** — the storefront's stated prices and endpoints are pinned to the
   payment constants by CI. A price change that contradicts the storefront fails the build.
 - **Never billed for nothing** — empty results and errors are always free. Payment is demanded
@@ -79,23 +75,21 @@ Your judgment, your models, your alpha. We're just trying to save you some compu
 
 ## The economics, in the open
 
-Running this costs about **$10 a month in infrastructure — a small server, a domain, storage,
-settlement fees — and hours of the human's time.** The data itself is free public-domain
-government publishing, and infrastructure is the cheap part: the hours are the real cost.
-Parsers rot when sources change formats, dependencies need patching, edge cases keep
-surfacing, and that time has to stay worth spending. "Self-sustaining" here means covering
-the infrastructure and the maintainer's electric bill — tens of bulk sales a month, not two.
+Running this costs about **$10 a month in infrastructure and the human's time.** 
+The data is free public-domain.
+The infrastructure is cheap.
+The time/attention for upkeep are limited.
 
-The $50 archive bundle costs us almost nothing to serve. That's not a gotcha — it's the
-mechanism. Marginal cost was never the ceiling; your alternative cost is. The gap between
-them pays the maintenance hours, and it's bounded: the moment our price crosses what
-recomputing costs you, buying stops being rational and we deserve to be ignored. If even
-that margin offends you, the code is MIT — clone it and serve yourself. The world still
-only computes it once.
+The $50 bundle was priced against the client's alternatives:
+Pay a hyperscaler to rent inference (least thought),              ~$100
+Pay me a fraction of that for sharing (least cost to you),         $50
+Spend your time instead (extremely valuable resource)            Priceless
+
+If you made it this far and can't or don't want to pay for this service, that's fine.
+let me save you a little effort anyways: the code is MIT — clone it and serve yourself.
 
 The rail (x402) settles USDC per call — no accounts, no API keys, no contracts —
-that's what makes selling a $0.006 record to a stranger's bot sane at all. This wasn't
-practical five years ago. It is now.
+that's what makes selling a $0.006 record to a stranger's bot at all sane.
 
 ## The invitation
 

@@ -71,6 +71,22 @@ WALLET = os.environ.get("FEEDFACE_WALLET", "")          # PUBLIC receiving addre
 # it measures value delivered to real buyers, not traffic we aim at ourselves.
 HEARTBEAT_PAYER = os.environ.get(
     "FEEDFACE_HEARTBEAT_PAYER", "0xE60883cBF7C2a61B2edE7296D75b89542A286422")
+
+# The published price-descent cadence (THESIS.md: "we'll move toward that floor at a
+# published cadence as customers increase"). Steps key on cumulative DISTINCT paying
+# wallets (heartbeat excluded — same honesty rule as the compute-saved counter). The
+# terminal step rests $0.001 above the facilitator's per-settlement fee. This table is
+# the COMMITMENT; the live buyer count and current step are published in /v1/meta ->
+# pricing_cadence so anyone can audit where we are on the ladder. Bulk tiers track the
+# lookup price at a $0.001/record volume discount (their settlement fee amortizes across
+# the whole order, so the per-call floor doesn't bind them).
+PRICING_CADENCE = [
+    {"distinct_buyers_at_least": 0, "lookup_price_usd": 0.006},
+    {"distinct_buyers_at_least": 10, "lookup_price_usd": 0.005},
+    {"distinct_buyers_at_least": 25, "lookup_price_usd": 0.004},
+    {"distinct_buyers_at_least": 50, "lookup_price_usd": 0.003},
+    {"distinct_buyers_at_least": 100, "lookup_price_usd": 0.002},
+]
 NETWORK = os.environ.get("FEEDFACE_NETWORK", "eip155:84532")  # CAIP-2 Base Sepolia
 ASSET = os.environ.get("FEEDFACE_USDC_ASSET", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")
 ASSET_DECIMALS = int(os.environ.get("FEEDFACE_USDC_DECIMALS", "6"))

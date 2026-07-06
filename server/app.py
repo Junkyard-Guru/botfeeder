@@ -88,6 +88,29 @@ def _semantic_census(records: list[dict]) -> dict | None:
     }
 
 
+def _pricing_cadence() -> dict:
+    """Live view of the published price-descent commitment (payments.PRICING_CADENCE)."""
+    from server import volume_store
+    buyers = volume_store.distinct_buyers(exclude_payers=(payments.HEARTBEAT_PAYER,))
+    current = max((s for s in payments.PRICING_CADENCE
+                   if buyers >= s["distinct_buyers_at_least"]),
+                  key=lambda s: s["distinct_buyers_at_least"])
+    upcoming = [s for s in payments.PRICING_CADENCE
+                if s["distinct_buyers_at_least"] > buyers]
+    return {
+        "commitment": "the lookup price steps down this schedule as distinct paying "
+                      "wallets accumulate; the terminal step rests $0.001 above the "
+                      "facilitator's per-settlement fee. Bulk tiers track lookup at a "
+                      "$0.001/record volume discount",
+        "schedule": payments.PRICING_CADENCE,
+        "distinct_buyers_to_date": buyers,
+        "current_step": current,
+        "next_step": upcoming[0] if upcoming else None,
+        "buyer_counting_rule": "distinct settled payer wallets, our own heartbeat wallet "
+                               "excluded — same rule as /v1/compute-saved",
+    }
+
+
 def _paywall_or_serve(request: Request, payload: dict, price: float | None = None,
                       discovery_key: str | None = None) -> JSONResponse | dict:
     """Charge only because there's data here; empty payloads never reach this.
@@ -154,6 +177,8 @@ not pattern-matched (live census: /v1/meta -> diy_comparison.semantic_content_ce
 Our lookup tier is ${payments.PRICE_USD}/record; bulk tiers drop to
 ${payments.BULK_PER_RECORD_USD} and ${payments.BULK_10K_PER_RECORD_USD}/record.
 Live math with sources: GET /v1/meta -> diy_comparison.
+Price descent is a published commitment: lookup steps $0.006 -> $0.002 as distinct paying
+wallets accumulate. Schedule + our live position on it: GET /v1/meta -> pricing_cadence.
 
 ## Ingredients (all public-domain / public-record primary sources, fetched direct)
 SEC EDGAR Form 4 (insider trades) | SEC 8-K (material events) | SEC 13F-HR (institutional
@@ -210,6 +235,9 @@ def meta() -> dict:
             "signals-cross-source": "uniform signal envelopes over every mapped feed (/v1/signals/*)",
             "watch-retainer": "prepaid proactive push for a watchlist (/v1/watch/*)",
         },
+        # The published descent schedule (THESIS.md promise). current_* computed live so
+        # the commitment and our position on it are auditable in one place.
+        "pricing_cadence": _pricing_cadence(),
         "compute_saved": {
             "what": "running total of DIY inference cost avoided by buyers — the number "
                     "this service exists to grow",

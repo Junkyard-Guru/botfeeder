@@ -99,9 +99,11 @@ def _pricing_cadence() -> dict:
                 if s["distinct_buyers_at_least"] > buyers]
     return {
         "commitment": "the lookup price steps down this schedule as distinct paying "
-                      "wallets accumulate; the terminal step rests $0.001 above the "
-                      "facilitator's per-settlement fee. Bulk tiers track lookup at a "
-                      "$0.001/record volume discount",
+                      "wallets accumulate — thresholds at orders of magnitude, since "
+                      "communities can pool one purchase. Lookup rests $0.001 above the "
+                      "facilitator's per-settlement fee from 10,000 buyers on; bulk tiers "
+                      "track lookup at a $0.001/record volume discount until 100,000 "
+                      "buyers, where every non-lookup price is slashed 90%",
         "schedule": payments.PRICING_CADENCE,
         "distinct_buyers_to_date": buyers,
         "current_step": current,
@@ -177,8 +179,9 @@ not pattern-matched (live census: /v1/meta -> diy_comparison.semantic_content_ce
 Our lookup tier is ${payments.PRICE_USD}/record; bulk tiers drop to
 ${payments.BULK_PER_RECORD_USD} and ${payments.BULK_10K_PER_RECORD_USD}/record.
 Live math with sources: GET /v1/meta -> diy_comparison.
-Price descent is a published commitment: lookup steps $0.006 -> $0.002 as distinct paying
-wallets accumulate. Schedule + our live position on it: GET /v1/meta -> pricing_cadence.
+Price descent is a published commitment, thresholds at orders of magnitude: lookup steps
+$0.006 -> $0.002 by 10,000 distinct paying wallets; at 100,000 every other tier is slashed
+90%. Schedule + our live position on it: GET /v1/meta -> pricing_cadence.
 
 ## Ingredients (all public-domain / public-record primary sources, fetched direct)
 SEC EDGAR Form 4 (insider trades) | SEC 8-K (material events) | SEC 13F-HR (institutional

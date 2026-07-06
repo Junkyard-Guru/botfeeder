@@ -83,9 +83,15 @@ HEARTBEAT_PAYER = os.environ.get(
 PRICING_CADENCE = [
     {"distinct_buyers_at_least": 0, "lookup_price_usd": 0.006},
     {"distinct_buyers_at_least": 10, "lookup_price_usd": 0.005},
-    {"distinct_buyers_at_least": 25, "lookup_price_usd": 0.004},
-    {"distinct_buyers_at_least": 50, "lookup_price_usd": 0.003},
-    {"distinct_buyers_at_least": 100, "lookup_price_usd": 0.002},
+    {"distinct_buyers_at_least": 100, "lookup_price_usd": 0.004},
+    {"distinct_buyers_at_least": 1_000, "lookup_price_usd": 0.003},
+    {"distinct_buyers_at_least": 10_000, "lookup_price_usd": 0.002},
+    # Terminal step: lookup is already at its floor perch ($0.001 above the settlement fee)
+    # and stays there; every OTHER tier's price is slashed 90% — at that buyer count,
+    # volume dwarfs price and the bulk tiers' one-settlement-per-order economics leave
+    # room the per-call lookup never had.
+    {"distinct_buyers_at_least": 100_000, "lookup_price_usd": 0.002,
+     "all_other_tiers_slashed_pct": 90},
 ]
 NETWORK = os.environ.get("FEEDFACE_NETWORK", "eip155:84532")  # CAIP-2 Base Sepolia
 ASSET = os.environ.get("FEEDFACE_USDC_ASSET", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")

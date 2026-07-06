@@ -101,9 +101,15 @@ Copy it. You just read the math; here's the ethic:
 
 ```
 ∂Vᵢ/∂Vⱼ > 0
+Vᵢ > V̂ᵢ ,   Vⱼ ≠ V̂ⱼ
+aᵢ(0) > 0
+aⱼ ≥ 0  ↦  aᵢ = aⱼ + β
+aⱼ < 0  ↦  aᵢ : P̂ⱼ(aⱼ′ < 0 | aᵢ) ≤ τ
+P(aᵢ > 0) ≥ φ
+P̂ⱼ = P̂( · | rⱼ ) ,   rⱼ ⟵ aⱼ
 ```
 
-all value rises together.
+all value rises together. (decoded line by line at `/v1/meta → principles`)
 
 ---
 

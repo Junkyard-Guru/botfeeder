@@ -37,6 +37,10 @@ Every record carries a `source_url` back to the primary government source. Check
 
 ## The pricing invariant
 
+Prices step **down** on a published cadence as settled purchases accumulate — schedule and
+live position at `/v1/meta → pricing_cadence`; every change is logged with its reasoning in
+[PRICING-CHANGELOG.md](PRICING-CHANGELOG.md).
+
 Every tier prices **provably below the buyer's own DIY inference cost** ($0.01 per filing on
 the cheapest capable model, inference + electricity, before edge-case engineering) and above the
 hard floor set by the payment facilitator's per-settlement fee. The multiples are recomputed live from

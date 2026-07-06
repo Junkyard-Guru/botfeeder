@@ -117,33 +117,42 @@ def test_meta_carries_semantic_census():
 
 def test_pricing_cadence_published_and_coherent(tmp_path, monkeypatch):
     """The thesis promises a PUBLISHED cadence — meta must carry the schedule, the live
-    buyer count, and a terminal step that never touches the settlement floor."""
+    purchase count, and a terminal lookup step that never touches the settlement floor."""
     monkeypatch.setattr(volume_store, "DB_PATH", _db(tmp_path))
     body = client.get("/v1/meta").json()
     cadence = body["pricing_cadence"]
     schedule = cadence["schedule"]
-    # monotonic: more buyers -> strictly lower price
-    thresholds = [s["distinct_buyers_at_least"] for s in schedule]
-    prices = [s["lookup_price_usd"] for s in schedule]
+    # monotonic: more purchases -> never-higher prices, bulk in sync with lookup
+    thresholds = [s["settled_purchases_at_least"] for s in schedule]
+    lookups = [s["lookup_price_usd"] for s in schedule]
+    bulks = [s["bulk_per_record_usd"] for s in schedule]
     assert thresholds == sorted(thresholds)
-    assert prices == sorted(prices, reverse=True)
-    # first step is today's live price; terminal step stays above the $0.001 fee
-    assert prices[0] == payments.PRICE_USD
-    assert prices[-1] >= 0.002
-    # zero buyers -> step 1 current, step 2 next
-    assert cadence["distinct_buyers_to_date"] == 0
+    assert lookups == sorted(lookups, reverse=True)
+    assert bulks == sorted(bulks, reverse=True)
+    # bulk descends in sync (lookup - $0.001) at every step except the terminal halving
+    for s in schedule[:-1]:
+        assert round(s["lookup_price_usd"] - s["bulk_per_record_usd"], 6) == 0.001
+    assert schedule[-1]["bulk_per_record_usd"] == schedule[-2]["bulk_per_record_usd"] / 2
+    # first step is today's live prices; lookup terminal stays above the $0.001 fee
+    assert lookups[0] == payments.PRICE_USD
+    assert bulks[0] == payments.BULK_PER_RECORD_USD
+    assert lookups[-1] >= 0.002
+    # zero purchases -> step 1 current, step 2 next
+    assert cadence["settled_purchases_to_date"] == 0
     assert cadence["current_step"] == schedule[0]
     assert cadence["next_step"] == schedule[1]
 
 
-def test_distinct_buyers_excludes_heartbeat(tmp_path, monkeypatch):
+def test_settled_purchases_counts_events_not_wallets(tmp_path, monkeypatch):
     db = _db(tmp_path)
     monkeypatch.setattr(volume_store, "DB_PATH", db)
+    # same wallet twice = TWO events (identities are rotatable; transactions are what count)
     volume_store.record("lookup", 0.006, "eip155:8453", "settled", payer=BUYER, records=1)
     volume_store.record("lookup", 0.006, "eip155:8453", "settled", payer=BUYER, records=1)
     volume_store.record("lookup", 0.006, "eip155:8453", "settled",
-                        payer=HEARTBEAT, records=1)
-    assert volume_store.distinct_buyers(exclude_payers=(HEARTBEAT,), db_path=db) == 1
+                        payer=HEARTBEAT, records=1)  # heartbeat excluded
+    volume_store.record("lookup", 0.006, "eip155:8453", "402", records=1)  # unpaid ignored
+    assert volume_store.settled_purchases(exclude_payers=(HEARTBEAT,), db_path=db) == 2
 
 
 def test_page_advertises_the_counter():

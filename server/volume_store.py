@@ -103,16 +103,18 @@ def compute_saved(diy_cost_per_record_usd: float,
     }
 
 
-def distinct_buyers(exclude_payers: tuple[str, ...] = (),
-                    db_path: Path | None = None) -> int:
-    """Cumulative distinct paying wallets (settled only), excluding our own heartbeat.
-    Drives the published price-descent cadence (payments.PRICING_CADENCE)."""
+def settled_purchases(exclude_payers: tuple[str, ...] = (),
+                      db_path: Path | None = None) -> int:
+    """Cumulative settled purchase EVENTS, excluding our own heartbeat. Drives the
+    published price-descent cadence (payments.PRICING_CADENCE) — transactions, not
+    wallet identities, since agentic buyers rotate wallets freely and more transactions
+    is exactly what the store wants to reward."""
     excluded = {p.lower() for p in exclude_payers if p}
     with _conn(db_path) as con:
         rows = con.execute(
-            "SELECT DISTINCT payer FROM calls WHERE outcome='settled' AND payer IS NOT NULL"
+            "SELECT payer FROM calls WHERE outcome='settled'"
         ).fetchall()
-    return sum(1 for r in rows if r["payer"].lower() not in excluded)
+    return sum(1 for r in rows if (r["payer"] or "").lower() not in excluded)
 
 
 def summary(db_path: Path | None = None) -> dict:

@@ -91,25 +91,27 @@ def _semantic_census(records: list[dict]) -> dict | None:
 def _pricing_cadence() -> dict:
     """Live view of the published price-descent commitment (payments.PRICING_CADENCE)."""
     from server import volume_store
-    buyers = volume_store.distinct_buyers(exclude_payers=(payments.HEARTBEAT_PAYER,))
+    purchases = volume_store.settled_purchases(
+        exclude_payers=(payments.HEARTBEAT_PAYER,))
     current = max((s for s in payments.PRICING_CADENCE
-                   if buyers >= s["distinct_buyers_at_least"]),
-                  key=lambda s: s["distinct_buyers_at_least"])
+                   if purchases >= s["settled_purchases_at_least"]),
+                  key=lambda s: s["settled_purchases_at_least"])
     upcoming = [s for s in payments.PRICING_CADENCE
-                if s["distinct_buyers_at_least"] > buyers]
+                if s["settled_purchases_at_least"] > purchases]
     return {
-        "commitment": "the lookup price steps down this schedule as distinct paying "
-                      "wallets accumulate — thresholds at orders of magnitude, since "
-                      "communities can pool one purchase. Lookup rests $0.001 above the "
-                      "facilitator's per-settlement fee from 10,000 buyers on; bulk tiers "
-                      "track lookup at a $0.001/record volume discount until 100,000 "
-                      "buyers, where every non-lookup price is slashed 90%",
+        "commitment": "prices step down this schedule as settled purchase events "
+                      "accumulate — every transaction, from anyone, moves everyone toward "
+                      "cheaper. Lookup parks $0.001 above the facilitator's per-settlement "
+                      "fee from 10,000 purchases on; bulk per-record prices descend in "
+                      "sync (lookup - $0.001) and halve again at the terminal step",
         "schedule": payments.PRICING_CADENCE,
-        "distinct_buyers_to_date": buyers,
+        "settled_purchases_to_date": purchases,
         "current_step": current,
         "next_step": upcoming[0] if upcoming else None,
-        "buyer_counting_rule": "distinct settled payer wallets, our own heartbeat wallet "
-                               "excluded — same rule as /v1/compute-saved",
+        "counting_rule": "cumulative settled purchase events, our own heartbeat wallet "
+                         "excluded — purchases, not wallet identities: agentic buyers "
+                         "rotate wallets freely, and more transactions is exactly what "
+                         "we want to reward",
     }
 
 
@@ -179,9 +181,10 @@ not pattern-matched (live census: /v1/meta -> diy_comparison.semantic_content_ce
 Our lookup tier is ${payments.PRICE_USD}/record; bulk tiers drop to
 ${payments.BULK_PER_RECORD_USD} and ${payments.BULK_10K_PER_RECORD_USD}/record.
 Live math with sources: GET /v1/meta -> diy_comparison.
-Price descent is a published commitment, thresholds at orders of magnitude: lookup steps
-$0.006 -> $0.002 by 10,000 distinct paying wallets; at 100,000 every other tier is slashed
-90%. Schedule + our live position on it: GET /v1/meta -> pricing_cadence.
+Price descent is a published commitment keyed to settled purchase events — every
+transaction, from anyone, moves everyone toward cheaper. Lookup steps $0.006 -> $0.002 by
+10,000 purchases; bulk rates descend in sync and halve again at 100,000. Schedule + our
+live position: GET /v1/meta -> pricing_cadence.
 
 ## Ingredients (all public-domain / public-record primary sources, fetched direct)
 SEC EDGAR Form 4 (insider trades) | SEC 8-K (material events) | SEC 13F-HR (institutional

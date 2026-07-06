@@ -73,25 +73,23 @@ HEARTBEAT_PAYER = os.environ.get(
     "FEEDFACE_HEARTBEAT_PAYER", "0xE60883cBF7C2a61B2edE7296D75b89542A286422")
 
 # The published price-descent cadence (THESIS.md: "we'll move toward that floor at a
-# published cadence as customers increase"). Steps key on cumulative DISTINCT paying
-# wallets (heartbeat excluded — same honesty rule as the compute-saved counter). The
-# terminal step rests $0.001 above the facilitator's per-settlement fee. This table is
-# the COMMITMENT; the live buyer count and current step are published in /v1/meta ->
-# pricing_cadence so anyone can audit where we are on the ladder. Bulk tiers track the
-# lookup price at a $0.001/record volume discount (their settlement fee amortizes across
-# the whole order, so the per-call floor doesn't bind them).
+# published cadence as customers increase"). Steps key on cumulative SETTLED PURCHASE
+# EVENTS (heartbeat excluded — same honesty rule as the compute-saved counter). Purchases,
+# not wallets: our customers are agentic workers whose wallet identity is a string of code
+# that rotates freely, so counting identities is a meaningless speed bump — counting
+# transactions makes every purchase, from anyone, pull prices down for everyone, which is
+# the behavior the store exists to maximize. Bulk per-record prices descend IN SYNC with
+# lookup (lookup - $0.001/record) at every step; lookup parks $0.001 above the facilitator's
+# per-settlement fee from 10,000 purchases on, and the terminal step halves the bulk rate
+# (bulk orders settle once per order, so the per-call floor never binds them). This table
+# is the COMMITMENT; live progress is published in /v1/meta -> pricing_cadence.
 PRICING_CADENCE = [
-    {"distinct_buyers_at_least": 0, "lookup_price_usd": 0.006},
-    {"distinct_buyers_at_least": 10, "lookup_price_usd": 0.005},
-    {"distinct_buyers_at_least": 100, "lookup_price_usd": 0.004},
-    {"distinct_buyers_at_least": 1_000, "lookup_price_usd": 0.003},
-    {"distinct_buyers_at_least": 10_000, "lookup_price_usd": 0.002},
-    # Terminal step: lookup is already at its floor perch ($0.001 above the settlement fee)
-    # and stays there; every OTHER tier's price is slashed 90% — at that buyer count,
-    # volume dwarfs price and the bulk tiers' one-settlement-per-order economics leave
-    # room the per-call lookup never had.
-    {"distinct_buyers_at_least": 100_000, "lookup_price_usd": 0.002,
-     "all_other_tiers_slashed_pct": 90},
+    {"settled_purchases_at_least": 0, "lookup_price_usd": 0.006, "bulk_per_record_usd": 0.005},
+    {"settled_purchases_at_least": 10, "lookup_price_usd": 0.005, "bulk_per_record_usd": 0.004},
+    {"settled_purchases_at_least": 100, "lookup_price_usd": 0.004, "bulk_per_record_usd": 0.003},
+    {"settled_purchases_at_least": 1_000, "lookup_price_usd": 0.003, "bulk_per_record_usd": 0.002},
+    {"settled_purchases_at_least": 10_000, "lookup_price_usd": 0.002, "bulk_per_record_usd": 0.001},
+    {"settled_purchases_at_least": 100_000, "lookup_price_usd": 0.002, "bulk_per_record_usd": 0.0005},
 ]
 NETWORK = os.environ.get("FEEDFACE_NETWORK", "eip155:84532")  # CAIP-2 Base Sepolia
 ASSET = os.environ.get("FEEDFACE_USDC_ASSET", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")

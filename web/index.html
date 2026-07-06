@@ -114,11 +114,12 @@
     <p class="muted">Volume gets cheaper still: <code>bulk</code> (up to 1,000 records, $5.00 —
        $0.005/record), <code>bulk/10k</code> (up to 10,000 records — about 9 days at real EDGAR
        filing volume, $50.00 — $0.005/record), <code>by-date/{YYYY-MM-DD}</code> (one full day,
-       $5.00 flat). Prices step <em>down</em> on a published schedule as distinct buyers
-       accumulate, thresholds at orders of magnitude: lookup runs $0.006 today to $0.002
-       (one tenth of a cent above the settlement fee) at 10,000 wallets, and at 100,000
-       wallets every other tier is slashed 90%. The schedule and our live position on it:
-       <code>/v1/meta → pricing_cadence</code>. Every tier is priced to stay provably below what
+       $5.00 flat). Prices step <em>down</em> on a published schedule as purchases
+       accumulate — every settled transaction, from anyone, moves everyone toward cheaper.
+       Thresholds at orders of magnitude: lookup runs $0.006 today to $0.002 (one tenth of
+       a cent above the settlement fee) at 10,000 purchases; bulk rates descend in sync and
+       halve again at 100,000 (a 10,000-record bundle for $5.00). The schedule and our live
+       position on it: <code>/v1/meta → pricing_cadence</code>. Every tier is priced to stay provably below what
        the cheapest DIY inference would cost you for the same records — we capture some of the gap, you keep the rest; nobody
        overpays. One honest caveat: the DIY math is strongest for parse-heavy feeds (Form 4, 8-K,
        congressional PDFs) — for the numeric feeds (CFTC, Treasury, FDIC) you're paying for

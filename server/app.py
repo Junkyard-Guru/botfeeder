@@ -88,6 +88,17 @@ def _semantic_census(records: list[dict]) -> dict | None:
     }
 
 
+def _promotion() -> dict:
+    """Live promo state. During a free window every paid endpoint serves without payment."""
+    fu = payments.free_until()
+    return {
+        "free_for_everyone": payments.is_free_now(),
+        "free_until": fu.isoformat() if fu else None,
+        "note": "all endpoints are free — no payment required on any call — until free_until"
+                if payments.is_free_now() else "no promotion active; standard pricing applies",
+    }
+
+
 def _pricing_cadence() -> dict:
     """Live view of the published price-descent commitment (payments.PRICING_CADENCE)."""
     from server import volume_store
@@ -168,9 +179,13 @@ def compute_saved() -> dict:
 def llms_txt() -> str:
     """Agent-readable plaintext overview (llms.txt convention). Generated from the same live
     constants as /v1/meta so it cannot drift from what's actually served (docs/07)."""
+    _fu = payments.free_until()
+    free_banner = (
+        f"\n>> FREE WEEK: every endpoint is free — no payment required on any call — "
+        f"until {_fu.isoformat()}. Just GET what you want. <<\n" if payments.is_free_now() else "")
     return f"""# The Junkyard — bot food
 > Parsed primary-source market data for trading agents, priced below your own inference cost.
-> Payment: x402 (HTTP 402 -> USDC on Base, per call, no account/signup/API key).
+> Payment: x402 (HTTP 402 -> USDC on Base, per call, no account/signup/API key).{free_banner}
 
 ## Why buy instead of DIY
 Replicating our Form 4 parse accuracy costs ~${payments.DIY_COST_PER_FILING_USD}/filing
@@ -241,6 +256,8 @@ def meta() -> dict:
             "signals-cross-source": "uniform signal envelopes over every mapped feed (/v1/signals/*)",
             "watch-retainer": "prepaid proactive push for a watchlist (/v1/watch/*)",
         },
+        # Time-boxed free-for-everyone promo, when one is running (payments.is_free_now).
+        "promotion": _promotion(),
         # The published descent schedule (THESIS.md promise). current_* computed live so
         # the commitment and our position on it are auditable in one place.
         "pricing_cadence": _pricing_cadence(),

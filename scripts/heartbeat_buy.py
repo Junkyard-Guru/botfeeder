@@ -36,6 +36,20 @@ NETWORK = os.environ.get("FEEDFACE_NETWORK", "eip155:8453")  # Base mainnet
 
 
 def main() -> int:
+    # Self-heal across a free-week promo: during an announced free window every endpoint
+    # serves without payment, so a settlement is impossible and a 200-without-payment is
+    # EXPECTED, not a fault. Skip cleanly (regardless of key config) and let the timer resume
+    # normal beats once the window closes — no manual toggle, no false alarm.
+    meta_base = URL.split("/v1/")[0]
+    try:
+        promo = httpx.get(f"{meta_base}/v1/meta", timeout=30.0).json().get("promotion", {})
+        if promo.get("free_for_everyone"):
+            print(f"[heartbeat] free week active (until {promo.get('free_until')}) — "
+                  "skipping self-purchase")
+            return 0
+    except Exception as e:  # noqa: BLE001 — meta probe is best-effort; fall through to normal beat
+        print(f"[heartbeat] promo check failed (proceeding): {e}", file=sys.stderr)
+
     key = os.environ.get("FEEDFACE_HEARTBEAT_BUYER_KEY", "")
     if not key:
         print("[heartbeat] FEEDFACE_HEARTBEAT_BUYER_KEY not set", file=sys.stderr)

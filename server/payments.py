@@ -19,8 +19,29 @@ from __future__ import annotations
 
 import os
 import sys
+from datetime import datetime, timezone
 
 MODE = os.environ.get("FEEDFACE_X402_MODE", "off")
+
+
+def free_until() -> datetime | None:
+    """Promo window end (FEEDFACE_FREE_UNTIL, ISO 8601). Read at call-time so the free
+    window can be opened or closed by editing the env + restart, no code change. Returns
+    None when unset/unparseable (fail closed → normal paid operation)."""
+    raw = os.environ.get("FEEDFACE_FREE_UNTIL", "").strip()
+    if not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def is_free_now() -> bool:
+    """True during an announced free-for-everyone promo window (see free_until)."""
+    fu = free_until()
+    return fu is not None and datetime.now(timezone.utc) < fu
 PRICE_USD = float(os.environ.get("FEEDFACE_PRICE_USD", "0.006"))       # Good: commodity per-record
 
 # Pricing model (2026-07-04): value-based against the buyer's next-best alternative, which is
@@ -288,6 +309,15 @@ def ensure_paid(request, price: float = PRICE_USD, discovery_key: str | None = N
     """
     endpoint = discovery_key or "unknown"
     if MODE == "off":
+        return
+
+    if is_free_now():
+        # Announced free-for-everyone window: serve without demanding payment, but log the
+        # delivery (outcome='free', price 0) so we can measure promo traffic separately from
+        # paid sales. Free deliveries do NOT advance the paid descent cadence (that keys on
+        # 'settled' only) and are not booked as revenue.
+        from . import volume_store
+        volume_store.record(endpoint, 0.0, NETWORK, "free", records=records)
         return
 
     if MODE == "trust":

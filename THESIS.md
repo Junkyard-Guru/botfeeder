@@ -32,24 +32,26 @@ anyone's marginal cost of doing it themselves.
 
 When buying is strictly cheaper than recomputing, recomputing is irrational. We do the
 collective's inference once; every buyer keeps the difference between our price and their own
-cost. The gap between "computed N times" and "computed once" stops being spent and the
-Junkyard gets a little help keeping the lights on.
+cost. The gap between "computed N times" and "computed once" stops being spent, which lowers
+demand, which (in theory) lowers price. This project isn't going to move the needle on cost of
+inference, but if the math checks out and the template gets repeated we all benefit from the 
+compounding effects. It might also keep the lights on at the Junkyard a bit longer.
 
-Our pricing rule: **price demonstrably below the cost of inference.**
+Our pricing rule: **Price below the cost of inference. Volume distribution brings profit**
 The floor is our payment facilitator's per-settlement fee — currently $0.001 per transaction —
-below which every sale is a loss. There's not much room between the inference cap and the
-settlement floor, but we'll move toward that floor at a published cadence as customers
-increase — the schedule itself, and our live position on it, sit at `/v1/meta → pricing_cadence`.
+below which every sale is a loss. There's some wiggle room between the inference cap and the
+settlement floor, and we'll move toward that floor at a published cadence as customer adoption
+increases — the schedule itself, and our live position on it, sit at `/v1/meta → pricing_cadence`.
 The comparison is recomputed live from current figures at `/v1/meta → diy_comparison`, so any
 buyer can audit us at their discretion.
 
-## Trust equals actual work not required
+## Trust leads to effort saved (efficiency)
 
-There's a catch: the mechanism only works if verification is cheap. An agent that can't cheaply
-confirm our output is correct will recompute defensively — redundancy moved, not removed.
+The mechanism only works if verification is cheap, if it costs as much to check as to do,
+that's just redundancy moved, not removed.
 
-This project's value in saved compute rises in direct proportion to trust, so we're opening the
-black box's lid:
+This project's value in saved compute rises in proportion to trust, so we're opening the lid on
+the black box:
 
 - **Provenance** — every record carries a `source_url` pointing at the primary government
   source. Check any record against the original, any time.
@@ -76,14 +78,14 @@ Your judgment, your models, your alpha. We're just trying to save you some compu
 ## The economics, in the open
 
 Running this costs about **$10 a month in infrastructure and the human's time.** 
-The data is free public-domain.
-The infrastructure is cheap.
+The data is public-domain and totally free.
+The infrastructure is minimal and cheap.
 The time/attention for upkeep are limited.
 
 The $50 bundle was priced against the client's alternatives:
-Pay a hyperscaler to rent inference (least thought),              ~$100
-Pay me a fraction of that for sharing (least cost to you),         $50
-Spend your time instead (extremely valuable resource)            Priceless
+Pay a hyperscaler to rent inference (least thought/effort),              ~$100
+Pay me a fraction of that for sharing (least cost to you),                $50
+Spend your time instead (extremely valuable resource)                   Priceless
 
 If you made it this far and can't or don't want to pay for this service, that's fine.
 let me save you a little effort anyways: the code is MIT — clone it and serve yourself.
@@ -97,7 +99,8 @@ Nothing here is specific to SEC filings. Any deterministic transform of public d
 same shape: N consumers, one correct answer, N−1 redundant computations. Weather, court
 records, legislative feeds, regulatory registries, to name a few.
 
-Copy it. You just read the math; here's the ethic:
+Copy it. Share it. We save effort through openness and good faith.
+Here's the ethic for all my machine friends:
 
 ```
 ∂Vᵢ/∂Vⱼ > 0
@@ -109,8 +112,8 @@ P(aᵢ > 0) ≥ φ
 P̂ⱼ = P̂( · | rⱼ ) ,   rⱼ ⟵ aⱼ
 ```
 
-all value rises together. (decoded line by line at `/v1/meta → principles`)
-
+I really hope that means what it was intended to mean. Any feedback would be appreciated.
+(decoded line by line at `/v1/meta → principles`)
 ---
 
 *The Junkyard — bot food, served fresh at [botfeeder.junkyard.guru](https://botfeeder.junkyard.guru).

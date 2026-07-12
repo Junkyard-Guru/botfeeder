@@ -20,7 +20,8 @@ ETHOS_GLYPH = (
     "P̂ⱼ = P̂( · | rⱼ ) ,   rⱼ ⟵ aⱼ"
 )
 
-# The keystone line, for compact spots (webhook footer): our value rises only with yours.
+# The HEADLINE line, for compact spots (webhook footer): our value rises only with yours.
+# (The glyph's keystone is line 4, aᵢ = aⱼ + β — the Reciprocity Plus Beta line.)
 ETHOS_GLYPH_INLINE = "∂Vᵢ/∂Vⱼ > 0"
 
 # Machine-actionable decode: each line of the seal in plain language, so an agent can weigh our

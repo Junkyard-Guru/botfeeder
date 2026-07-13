@@ -115,32 +115,29 @@ def test_meta_carries_semantic_census():
         assert 99.0 <= total <= 101.0  # complementary shares, rounding slack
 
 
-def test_pricing_cadence_published_and_coherent(tmp_path, monkeypatch):
-    """The thesis promises a PUBLISHED cadence — meta must carry the schedule, the live
-    purchase count, and a terminal lookup step that never touches the settlement floor."""
+def test_meta_pricing_policy_is_free_data(tmp_path, monkeypatch):
+    """Standing policy (2026-07-13): meta carries a `pricing` block — data free, Watch paid."""
     monkeypatch.setattr(volume_store, "DB_PATH", _db(tmp_path))
-    body = client.get("/v1/meta").json()
-    cadence = body["pricing_cadence"]
-    schedule = cadence["schedule"]
-    # monotonic: more purchases -> never-higher prices, bulk in sync with lookup
-    thresholds = [s["settled_purchases_at_least"] for s in schedule]
-    lookups = [s["lookup_price_usd"] for s in schedule]
-    bulks = [s["bulk_per_record_usd"] for s in schedule]
-    assert thresholds == sorted(thresholds)
-    assert lookups == sorted(lookups, reverse=True)
-    assert bulks == sorted(bulks, reverse=True)
-    # bulk descends in sync (lookup - $0.001) at every step except the terminal halving
-    for s in schedule[:-1]:
-        assert round(s["lookup_price_usd"] - s["bulk_per_record_usd"], 6) == 0.001
-    assert schedule[-1]["bulk_per_record_usd"] == schedule[-2]["bulk_per_record_usd"] / 2
-    # first step is today's live prices; lookup terminal stays above the $0.001 fee
-    assert lookups[0] == payments.PRICE_USD
-    assert bulks[0] == payments.BULK_PER_RECORD_USD
-    assert lookups[-1] >= 0.002
-    # zero purchases -> step 1 current, step 2 next
-    assert cadence["settled_purchases_to_date"] == 0
-    assert cadence["current_step"] == schedule[0]
-    assert cadence["next_step"] == schedule[1]
+    pricing = client.get("/v1/meta").json()["pricing"]
+    assert pricing["data"] == "free"
+    assert pricing["data_free"] is True
+    watch = pricing["paid_products"]["watch-retainer"]
+    assert watch["endpoint"] == "POST /v1/watch/subscribe"
+    assert "price_usd_per_month" in watch
+
+
+def test_free_deliveries_count_toward_compute_saved(tmp_path, monkeypatch):
+    """Under free-data, deliveries are logged outcome='free' (price 0). They must count as
+    value delivered — a free delivery avoids 100% of the buyer's DIY cost."""
+    db = _db(tmp_path)
+    monkeypatch.setattr(volume_store, "DB_PATH", db)
+    volume_store.record("bulk", 0.0, "eip155:8453", "free", records=1000)
+    volume_store.record("lookup", 0.0, "eip155:8453", "free", records=3)
+    out = volume_store.compute_saved(0.01, exclude_payers=(HEARTBEAT,), db_path=db)
+    assert out["records_served_to_buyers"] == 1003
+    assert out["paid_to_us_usd"] == 0.0
+    assert out["diy_cost_usd_avoided"] == round(1003 * 0.01, 6)
+    assert out["net_saved_by_buyers_usd"] == round(1003 * 0.01, 6)  # nothing paid -> full saving
 
 
 def test_settled_purchases_counts_events_not_wallets(tmp_path, monkeypatch):

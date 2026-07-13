@@ -76,16 +76,20 @@ def compute_saved(diy_cost_per_record_usd: float,
                   db_path: Path | None = None) -> dict:
     """The compute-saved counter: cumulative inference cost real buyers avoided.
 
-    records_served x DIY cost per record, minus what those buyers actually paid us.
-    exclude_payers (our own heartbeat wallet) keeps self-purchases OUT of the public
-    number — the counter measures value delivered to strangers, not traffic we generate
-    at ourselves to stay listed. Settled rows logged before the records column existed
-    (pre-2026-07-05) count as 0 records: a conservative undercount, never an overcount.
+    records_served x DIY cost per record, minus what those buyers actually paid us. Counts
+    BOTH settled sales and 'free' deliveries — under the standing free-data policy (2026-07-13)
+    data is served free, so a free delivery avoids 100% of the buyer's DIY inference cost
+    (price_usd=0 -> net saving = full DIY cost). exclude_payers (our own heartbeat wallet)
+    keeps self-purchases OUT of the public number — the counter measures value delivered to
+    strangers, not traffic we generate at ourselves to stay listed. Rows logged before the
+    records column existed (pre-2026-07-05) count as 0 records: a conservative undercount,
+    never an overcount.
     """
     excluded = {p.lower() for p in exclude_payers if p}
     with _conn(db_path) as con:
         rows = con.execute(
-            "SELECT ts, payer, price_usd, records FROM calls WHERE outcome='settled'"
+            "SELECT ts, payer, price_usd, records FROM calls "
+            "WHERE outcome IN ('settled', 'free')"
         ).fetchall()
     counted = [r for r in rows if (r["payer"] or "").lower() not in excluded]
     records_served = sum(r["records"] or 0 for r in counted)

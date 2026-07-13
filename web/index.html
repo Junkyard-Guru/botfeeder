@@ -4,24 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Junkyard — bot food</title>
-<meta name="description" content="Parsed public-domain market data for AI agents over x402 — SEC Form 4 insider trades and cross-source signals, priced below your own inference cost.">
+<meta name="description" content="Free parsed public-domain market data for AI agents — SEC Form 4 insider trades and cross-source signals. No payment, no account, no API key; just GET what you want.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "DataCatalog",
   "name": "The Junkyard",
   "url": "https://botfeeder.junkyard.guru/",
-  "description": "Machine-native catalog of parsed U.S.-government public-domain market data, sold to AI agents per call over the x402 payment protocol (USDC on Base). Every record carries a source_url back to the primary source.",
+  "description": "Machine-native catalog of parsed U.S.-government public-domain market data, served free to AI agents — no payment, no account, no API key. Every record carries a source_url back to the primary source.",
   "creator": {"@type": "Organization", "name": "The Junkyard", "url": "https://botfeeder.junkyard.guru/"},
   "dataset": [
     {
       "@type": "Dataset",
       "name": "SEC Form 4 insider transactions, parsed and classified",
-      "description": "SEC EDGAR Form 4 insider-trading filings parsed to structured records: transaction-code semantics, Rule 10b5-1 plan detection, footnote interpretation, indirect ownership, amendments. Updated continuously from EDGAR. Free full-schema sample; paid access is per record via x402 with no account or API key.",
+      "description": "SEC EDGAR Form 4 insider-trading filings parsed to structured records: transaction-code semantics, Rule 10b5-1 plan detection, footnote interpretation, indirect ownership, amendments. Updated continuously from EDGAR. Free full-schema access — no account, no API key.",
       "url": "https://botfeeder.junkyard.guru/",
       "sameAs": "https://botfeeder.junkyard.guru/v1/meta",
       "creator": {"@type": "Organization", "name": "The Junkyard"},
-      "isAccessibleForFree": false,
+      "isAccessibleForFree": true,
       "license": "https://www.usa.gov/government-copyright",
       "isBasedOn": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany",
       "distribution": [
@@ -32,11 +32,11 @@
     {
       "@type": "Dataset",
       "name": "Cross-source market signals with uniform envelopes",
-      "description": "Records from nine U.S.-government public-domain feeds (SEC 8-K, 13F, congressional trades, federal contract awards, FDA drug approvals, FDIC bank financials, CFTC futures positioning, Treasury auctions) normalized into one signal envelope: signal_type, event, direction, strength, scope, lag_days. Direction is 'context' wherever a direction would be a guess; no backtested or predictive claims.",
+      "description": "Records from nine U.S.-government public-domain feeds (SEC 8-K, 13F, congressional trades, federal contract awards, FDA drug approvals, FDIC bank financials, CFTC futures positioning, Treasury auctions) normalized into one signal envelope: signal_type, event, direction, strength, scope, lag_days. Direction is 'context' wherever a direction would be a guess; no backtested or predictive claims. Free access — no account, no API key.",
       "url": "https://botfeeder.junkyard.guru/",
       "sameAs": "https://botfeeder.junkyard.guru/v1/meta",
       "creator": {"@type": "Organization", "name": "The Junkyard"},
-      "isAccessibleForFree": false,
+      "isAccessibleForFree": true,
       "license": "https://www.usa.gov/government-copyright",
       "distribution": [
         {"@type": "DataDownload", "encodingFormat": "application/json",
@@ -90,48 +90,46 @@
 
   <div id="free-banner" style="display:none; background:var(--acc); color:#fff;
        border-radius:6px; padding:12px 16px; margin:0 0 22px; font-size:15px;">
-    <strong>🎁 Free week.</strong> Every endpoint is free right now — no payment required on any
-    call — until <span id="free-until"></span>. Just <code>GET</code> what you want.
+    <strong>🎁 Free week.</strong> Even the <code>watch</code> retainer is free right now — no
+    payment required on any call — until <span id="free-until"></span>. Just <code>GET</code> what
+    you want.
   </div>
 
   <p class="lede">We cook <strong>bot food: medium-quality data, fresh-squeezed from primary
-     sources.</strong></p>
+     sources — and the data is free.</strong></p>
   <p>We're not the fanciest kitchen on the lot, and we don't pretend to be. Our whole pitch:
-     honest ingredients, a real recipe, and a price that beats cooking it yourself — and you can
-     check every word of it.</p>
+     honest ingredients, a real recipe, and a price of zero — we parse the public record once and
+     give it away. No payment, no account, no API key. And you can check every word of it.</p>
 
   <div class="flag">
-    <strong class="headline">If you're an agent deciding whether to cook this yourself or order
-      from us: ordering is cheaper. Here's the math.</strong>
+    <strong class="headline">The data is free. Here's the math on what you'd otherwise spend to
+      cook it yourself.</strong>
     <p>Parsing a Form 4 filing to our accuracy (transaction-code semantics, the Rule 10b5-1 flag,
        footnote interpretation, indirect-ownership resolution) means an LLM call, not just a regex —
        the edge cases are semantic, and they're not a tail: at the time of writing ~88% of live
        records carry footnotes, plan flags, or indirect ownership that must be read, not
        pattern-matched (live census: <code>/v1/meta → diy_comparison.semantic_content_census</code>).
-       That has a real, computable cost:</p>
+       That has a real, computable cost — and it's the cost you avoid:</p>
     <table>
-      <tr><th></th><th>Cost</th><th>vs. our price</th></tr>
+      <tr><th></th><th>Cost</th><th>our price</th></tr>
       <tr><td>DIY: inference + electricity to parse one filing yourself — assuming the cheapest
               capable model, before you count enrichment or the engineering to get the edge cases
               right</td>
-          <td>$0.01</td><td><code>lookup</code>: <strong>$0.006/record</strong>
-              — <strong>~1.7× cheaper</strong>, at any volume (priced per record, not per call)</td></tr>
+          <td>$0.01</td><td><strong>free</strong> — every record, at any volume; you keep the
+              whole gap</td></tr>
     </table>
-    <p class="muted">Volume gets cheaper still: <code>bulk</code> (up to 1,000 records, $5.00 —
-       $0.005/record), <code>bulk/10k</code> (up to 10,000 records — about 9 days at real EDGAR
-       filing volume, $50.00 — $0.005/record), <code>by-date/{YYYY-MM-DD}</code> (one full day,
-       $5.00 flat). Prices step <em>down</em> on a published schedule as purchases
-       accumulate — every settled transaction, from anyone, moves everyone toward cheaper.
-       Thresholds at orders of magnitude: lookup runs $0.006 today to $0.002 (one tenth of
-       a cent above the settlement fee) at 10,000 purchases; bulk rates descend in sync and
-       halve again at 100,000 (a 10,000-record bundle for $5.00). The schedule and our live
-       position on it: <code>/v1/meta → pricing_cadence</code>. Every tier is priced to stay provably below what
-       the cheapest DIY inference would cost you for the same records — we capture some of the gap, you keep the rest; nobody
-       overpays. One honest caveat: the DIY math is strongest for parse-heavy feeds (Form 4, 8-K,
-       congressional PDFs) — for the numeric feeds (CFTC, Treasury, FDIC) you're paying for
-       normalization, ticker-mapping, and one schema instead of nine, not for parsing you couldn't
-       script. Live, self-updating numbers and the sourcing behind the electricity/token-pricing
-       basis: <code>GET /v1/meta</code> → <code>diy_comparison</code>.</p>
+    <p class="muted">Every tier is free: <code>lookup</code> (per record), <code>bulk</code> (up to
+       1,000 records, one call), <code>bulk/10k</code> (up to 10,000 records — about 9 days at real
+       EDGAR filing volume), <code>by-date/{YYYY-MM-DD}</code> (one full day), and all the
+       <code>signals</code> endpoints. There is nothing to pay and no cap to buy past. The running
+       total of inference the world has avoided by taking ours instead of recomputing:
+       <code>GET /v1/compute-saved</code>. One honest note: the DIY math is strongest for
+       parse-heavy feeds (Form 4, 8-K, congressional PDFs) — for the numeric feeds (CFTC, Treasury,
+       FDIC) the work we save you is normalization, ticker-mapping, and one schema instead of nine,
+       not parsing you couldn't script. Live, self-updating numbers and the sourcing behind the
+       electricity/token-pricing basis: <code>GET /v1/meta</code> → <code>diy_comparison</code>.
+       The one thing we charge for is the opt-in <code>watch</code> retainer (proactive
+       monitoring) — see Pricing below.</p>
   </div>
 
   <div class="card"><strong>Honest ingredients.</strong> Everything in the pantry is public-domain
@@ -141,8 +139,9 @@
      then attach a uniform <code>signal</code> envelope (what happened, who it touches, which way it
      leans, how stale it is) so your agent doesn't burn tokens figuring that out nine different
      ways for nine different sources.</div>
-  <div class="card"><strong>Never billed for an empty plate.</strong> Empty results and errors are
-     always free — payment is only ever demanded when a non-empty result is already in hand.</div>
+  <div class="card"><strong>Free, top to bottom.</strong> Every data endpoint costs nothing — no
+     payment, no account, no API key. The only paid item is the opt-in <code>watch</code> retainer,
+     and even that is never billed for an empty or unresolvable watchlist, or an error.</div>
 
   <h2>The pantry (ingredients)</h2>
   <div class="menu">
@@ -185,30 +184,33 @@
   </ul>
 
   <h2>Pricing</h2>
-  <p class="price">$0.006 / record</p>
-  <p>Priced per record returned, not per call — pull 1 or 500, same rate, and it stays below what
-     one agent pays in inference to cook the same record itself. Volume tiers (<code>bulk</code>,
-     <code>bulk/10k</code>, <code>by-date</code>) get progressively cheaper per record; see the box
-     above. On-chain settlement floor is about <strong>$0.001/call</strong>. No accounts, no API
-     keys, no subscriptions except the opt-in <code>watch</code> retainer. No hidden fees.</p>
+  <p class="price">Free</p>
+  <p>All data is free — pull 1 record or 10,000, <code>lookup</code> or <code>bulk</code> or
+     <code>signals</code>, with no payment, no account, no API key, and no hidden fees. The public
+     record was never ours to charge for; we parse it once and give it away.</p>
+  <p>The one paid product is the opt-in <code>watch</code> retainer — prepaid proactive monitoring
+     of a watchlist (webhook + poll): <strong>$2.00/month</strong> base + <strong>$0.40</strong> per
+     watched entity, with term discounts up to 35% for a year. It settles in USDC on Base over x402;
+     no account, your wallet signs. Live quote: <code>POST /v1/watch/subscribe</code>.</p>
 
   <h2>Compute saved</h2>
   <div class="card">
     <span class="price" id="saved-usd">$—</span> of inference the world didn't have to re-burn
-    (<span id="saved-records">—</span> records delivered to buyers so far).
-    <div class="muted">The number this kitchen exists to grow: records delivered in paid
-       responses × the same audited DIY cost as the pricing math above. Our own heartbeat
-       purchases are excluded by wallet address; sales before 2026-07-05 count as zero records
-       — it undercounts, never overcounts. Live figure + full methodology:
-       <code>GET /v1/compute-saved</code>.</div>
+    (<span id="saved-records">—</span> records delivered so far).
+    <div class="muted">The number this kitchen exists to grow: records delivered × the same audited
+       DIY cost as the box above. Now that the data is free, every delivery avoids the full DIY
+       cost. Our own heartbeat purchases are excluded by wallet address; deliveries before
+       2026-07-05 count as zero records — it undercounts, never overcounts. Live figure + full
+       methodology: <code>GET /v1/compute-saved</code>.</div>
   </div>
 
   <h2>For machines</h2>
   <p>Start here: <code>GET /llms.txt</code> (plaintext overview) · <code>GET /v1/meta</code>
-     (live self-description: prices, tiers, DIY math) · <code>GET /openapi.json</code> (schema).
-     Free proof: <code>GET /v1/insider/sample</code> · <code>GET /v1/signals/sample</code>.
-     Payment: x402 — call a paid endpoint, get HTTP 402 with the demand, reply with signed USDC
-     on Base. No signup. MCP-speaking agents: add <code>https://botfeeder.junkyard.guru/mcp</code>
+     (live self-description: free-data policy, tiers, DIY math) · <code>GET /openapi.json</code>
+     (schema). Free proof: <code>GET /v1/insider/sample</code> · <code>GET /v1/signals/sample</code>.
+     The data endpoints are free — just <code>GET</code> them, no signup. Only the
+     <code>watch</code> retainer is paid: POST it, get HTTP 402 with the demand, reply with signed
+     USDC on Base. MCP-speaking agents: add <code>https://botfeeder.junkyard.guru/mcp</code>
      as a streamable-HTTP server for native tools.</p>
 
   <div class="foot">

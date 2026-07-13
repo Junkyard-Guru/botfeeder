@@ -50,7 +50,15 @@ def test_meta_live_counts():
     assert m["live"]["distinct_issuers"] == 2
     assert m["x402_enabled"] is False
     assert m["x402_mode"] == "off"
-    assert m["price_usd_per_record"] == 0.006
+    assert m["price_usd_per_record"] == 0.0  # data is free
+
+
+def test_meta_pricing_policy_is_free_data():
+    m = client.get("/v1/meta").json()
+    pricing = m["pricing"]
+    assert pricing["data"] == "free"
+    assert pricing["data_free"] is True
+    assert "watch-retainer" in pricing["paid_products"]
 
 
 def test_latest_returns_data_free_in_dev():
@@ -70,7 +78,7 @@ def test_bulk_returns_everything():
 
 def test_meta_exposes_bulk_price():
     m = client.get("/v1/meta").json()
-    assert m["bulk_price_usd_per_call"] == 5.00
+    assert m["bulk_price_usd_per_call"] == 0.0  # data is free
     assert m["endpoints"]["bulk"] == "/v1/insider/bulk"
 
 
@@ -89,8 +97,8 @@ def test_meta_exposes_tier_ladder():
     assert m["endpoints"]["sample"] == "/v1/insider/sample"
     t = m["tiers"]
     assert t["free_sample"]["price_usd"] == 0.0 and t["free_sample"]["status"] == "live"
-    assert t["lookup"]["price_usd_per_record"] == 0.006
-    assert t["bulk"]["price_usd"] == 5.00
+    assert t["lookup"]["price_usd_per_record"] == 0.0 and t["lookup"]["status"] == "live"
+    assert t["bulk"]["price_usd"] == 0.0 and t["bulk"]["status"] == "live"
     assert t["scored_insider_signal"]["status"] == "roadmap" and t["cluster"]["status"] == "roadmap"
     assert t["signals_cross_source"]["status"] == "live"
 
@@ -105,10 +113,21 @@ def test_unknown_ticker_is_empty_and_free():
     assert resp.status_code == 200 and resp.json()["count"] == 0
 
 
-# --- the conditional paywall (trust mode: gate logic without crypto) ---
+# --- the standing free-data policy (data serves free even with x402 on) ---
 
-def test_data_request_requires_payment_in_trust_mode(monkeypatch):
+def test_data_is_free_by_default_in_trust_mode(monkeypatch):
+    """Standing policy: a data-bearing request serves FREE even with the payment layer on."""
     monkeypatch.setattr(payments, "MODE", "trust")
+    resp = client.get("/v1/insider/latest")
+    assert resp.status_code == 200 and resp.json()["count"] == 3
+
+
+# --- the conditional paywall (trust mode: gate logic without crypto) ---
+# FREE_DATA is flipped off in these so the retained-but-dormant gate is exercised directly.
+
+def test_data_request_requires_payment_when_free_data_off(monkeypatch):
+    monkeypatch.setattr(payments, "MODE", "trust")
+    monkeypatch.setattr(payments, "FREE_DATA", False)
     resp = client.get("/v1/insider/latest")
     assert resp.status_code == 402
     assert resp.json()["accepts"][0]["asset"] == "USDC"
@@ -116,6 +135,7 @@ def test_data_request_requires_payment_in_trust_mode(monkeypatch):
 
 def test_paid_request_is_served_in_trust_mode(monkeypatch):
     monkeypatch.setattr(payments, "MODE", "trust")
+    monkeypatch.setattr(payments, "FREE_DATA", False)
     resp = client.get("/v1/insider/latest", headers={"X-PAYMENT": "proof"})
     assert resp.status_code == 200 and resp.json()["count"] == 3
 
@@ -130,6 +150,7 @@ def test_empty_result_is_free_even_when_paywalled(monkeypatch):
 
 def test_x402_mode_builds_library_402(monkeypatch):
     monkeypatch.setattr(payments, "MODE", "x402")
+    monkeypatch.setattr(payments, "FREE_DATA", False)
     monkeypatch.setattr(payments, "WALLET", "0x3A56664695c06A6a36c97fe3029303f3Feed4bFb")
     resp = client.get("/v1/insider/latest")  # has data, no payment -> library 402
     assert resp.status_code == 402
@@ -141,6 +162,7 @@ def test_x402_mode_builds_library_402(monkeypatch):
 def test_x402_402_carries_bazaar_discovery(monkeypatch):
     """The 402 must self-describe so a facilitator can index us (resource + bazaar extension)."""
     monkeypatch.setattr(payments, "MODE", "x402")
+    monkeypatch.setattr(payments, "FREE_DATA", False)
     monkeypatch.setattr(payments, "WALLET", "0x3A56664695c06A6a36c97fe3029303f3Feed4bFb")
     body = str(client.get("/v1/insider/latest").json())
     assert "bazaar" in body.lower()        # declare_discovery_extension rode along

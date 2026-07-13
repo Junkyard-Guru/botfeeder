@@ -42,6 +42,28 @@ def is_free_now() -> bool:
     """True during an announced free-for-everyone promo window (see free_until)."""
     fu = free_until()
     return fu is not None and datetime.now(timezone.utc) < fu
+
+
+# --- Free-data policy (2026-07-13) -------------------------------------------------------------
+# Standing policy: the on-request data products — the insider feed and the cross-source signals —
+# are served to EVERYONE at no charge. The parsed public-domain data was never ours to license;
+# we give it away. Only the Watch retainer (PAID_ENDPOINTS below) — a prepaid proactive-MONITORING
+# service, not a data bundle — remains paid. The whole pricing machinery below (per-record prices,
+# bulk tiers, the descent cadence) is retained intact but GATED OFF for data, so restoring paid
+# data tiers is a one-switch change: set FEEDFACE_FREE_DATA=0. See PRICING-CHANGELOG.md 2026-07-13.
+FREE_DATA = os.environ.get("FEEDFACE_FREE_DATA", "1").strip().lower() not in (
+    "0", "false", "no", "off", "")
+# Discovery keys exempt from the free-data policy — the retainer product, which still charges.
+# Everything else an endpoint can pass to ensure_paid() is treated as free data.
+PAID_ENDPOINTS = frozenset({"watch_subscribe", "watch_renew"})
+
+
+def data_is_free() -> bool:
+    """True when the standing free-data policy is in force (the default). Data endpoints then
+    serve without a 402; the Watch retainer (PAID_ENDPOINTS) is unaffected."""
+    return FREE_DATA
+
+
 PRICE_USD = float(os.environ.get("FEEDFACE_PRICE_USD", "0.006"))       # Good: commodity per-record
 
 # Pricing model (2026-07-04): value-based against the buyer's next-best alternative, which is
@@ -311,11 +333,13 @@ def ensure_paid(request, price: float = PRICE_USD, discovery_key: str | None = N
     if MODE == "off":
         return
 
-    if is_free_now():
-        # Announced free-for-everyone window: serve without demanding payment, but log the
-        # delivery (outcome='free', price 0) so we can measure promo traffic separately from
-        # paid sales. Free deliveries do NOT advance the paid descent cadence (that keys on
-        # 'settled' only) and are not booked as revenue.
+    # Serve free when EITHER the standing free-data policy covers this endpoint (all data
+    # endpoints; the Watch retainer in PAID_ENDPOINTS is excluded) OR an announced
+    # free-for-everyone window is open (which frees everything, retainer included). Either way
+    # we log the delivery (outcome='free', price 0) so free traffic is measured separately from
+    # paid sales; free deliveries do NOT advance the (dormant) paid descent cadence and are not
+    # booked as revenue.
+    if (FREE_DATA and endpoint not in PAID_ENDPOINTS) or is_free_now():
         from . import volume_store
         volume_store.record(endpoint, 0.0, NETWORK, "free", records=records)
         return

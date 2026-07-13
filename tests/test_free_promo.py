@@ -76,12 +76,25 @@ def test_meta_and_llms_announce_free(monkeypatch):
     assert "FREE WEEK" in client.get("/llms.txt").text
 
 
-def test_no_promo_still_paywalls(monkeypatch):
+def test_no_promo_but_data_is_free(monkeypatch):
+    """No promo window, real x402 mode — data is STILL free (standing free-data policy),
+    only the promo banner is absent."""
     monkeypatch.setattr(payments, "MODE", "x402")
     monkeypatch.setattr(payments, "free_until", lambda: None)
     monkeypatch.setattr(payments, "is_free_now", lambda: False)
     assert client.get("/v1/meta").json()["promotion"]["free_for_everyone"] is False
     assert "FREE WEEK" not in client.get("/llms.txt").text
+    assert client.get("/v1/insider/latest?limit=1").status_code == 200  # free data, no 402
+
+
+def test_paywall_machinery_re_engages_when_free_data_off(monkeypatch):
+    """Reversibility guard: flip FREE_DATA off and the paid-data gate works exactly as before —
+    a data-bearing request issues a 402. (Watch stays paid regardless; see test_watch_routes.)"""
+    monkeypatch.setattr(payments, "MODE", "x402")
+    monkeypatch.setattr(payments, "free_until", lambda: None)
+    monkeypatch.setattr(payments, "is_free_now", lambda: False)
+    monkeypatch.setattr(payments, "FREE_DATA", False)
+    monkeypatch.setattr(payments, "WALLET", "0x3A56664695c06A6a36c97fe3029303f3Feed4bFb")
     assert client.get("/v1/insider/latest?limit=1").status_code == 402
 
 

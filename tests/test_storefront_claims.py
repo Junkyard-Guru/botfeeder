@@ -10,26 +10,29 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from server import payments
+from server import payments, watch
 from server.app import app
 
 client = TestClient(app)
 PAGE = (Path(__file__).resolve().parent.parent / "web" / "index.html").read_text(encoding="utf-8")
 
 
-def test_page_lookup_price_matches_payments():
-    assert f"${payments.PRICE_USD}/record" in PAGE.replace("0.0060", "0.006")
-    assert "$0.006 / record" in PAGE
+def test_page_advertises_data_as_free():
+    """The page must say the data is free — with no lingering per-record data price."""
+    assert '<p class="price">Free</p>' in PAGE
+    assert "The data is free" in PAGE
+    assert "$0.006" not in PAGE  # the old per-record data price is gone
+    assert "$0.005" not in PAGE  # old bulk per-record price gone
 
 
-def test_page_bulk_prices_match_payments():
-    assert f"${payments.BULK_PRICE_USD:.2f}" in PAGE           # $5.00
-    assert f"${payments.BULK_10K_PRICE_USD:.2f}" in PAGE       # $50.00
-    assert f"${payments.BULK_PER_RECORD_USD}/record" in PAGE   # $0.005/record
-    assert f"${payments.BULK_10K_PER_RECORD_USD}/record" in PAGE
+def test_page_watch_retainer_price_matches_constants():
+    """The one paid product's price on the page is pinned to the watch constants."""
+    assert f"${watch.WATCH_BASE_USD:.2f}/month" in PAGE          # $2.00/month
+    assert f"${watch.WATCH_ENTITY_USD:.2f}" in PAGE              # $0.40 per entity
 
 
-def test_page_diy_cost_matches_payments():
+def test_page_diy_cost_still_shown_as_value_avoided():
+    """The DIY cost stays on the page — now framed as the inference you avoid, for free."""
     assert f"${payments.DIY_COST_PER_FILING_USD}" in PAGE
 
 
@@ -40,12 +43,14 @@ def test_page_advertises_only_live_machine_surfaces():
         assert client.get(path).status_code == 200, f"{path} advertised but not live"
 
 
-def test_llms_txt_prices_are_live_constants():
+def test_llms_txt_states_free_data():
     txt = client.get("/llms.txt").text
-    assert f"${payments.PRICE_USD}/record" in txt
-    assert f"${payments.BULK_PRICE_USD}" in txt
+    assert "FREE" in txt or "free" in txt
+    assert "The data is FREE" in txt or "data is free" in txt.lower()
     assert "source_url" in txt
-    assert "never billed" in txt or "never be billed" in txt.lower() or "are never billed" in txt
+    # the data endpoints are advertised as free, and the retainer as the paid one
+    assert "(free)" in txt
+    assert "PAID" in txt
 
 
 def test_meta_quickstart_and_products():

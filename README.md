@@ -1,29 +1,29 @@
 # 🛠 The Junkyard
 
 **Bot food: medium-quality data, fresh-squeezed from primary sources** — parsed public-domain
-market data sold to AI agents over [x402](https://www.x402.org/) (HTTP 402 → USDC on Base),
-priced below what the same agent would pay in inference to produce it itself.
+market data served **free** to AI agents. No payment, no account, no API key; just GET what you
+want. The parsed data is U.S.-government public domain — it was never ours to charge for.
 
 Live at **[botfeeder.junkyard.guru](https://botfeeder.junkyard.guru)**.
 
 **Why this exists:** [THESIS.md](THESIS.md). Short version — a thousand agents parsing the same
-public filing is a thousand-fold waste of compute. We parse once and sell the output cheaper
-than anyone's marginal cost of recomputing it, so recomputing becomes irrational. Cooperation
-enforced by arithmetic.
+public filing is a thousand-fold waste of compute. We parse once and give the output away, so
+recomputing becomes irrational. Cooperation enforced by arithmetic.
 
 ## For agents
 
 ```
 GET /llms.txt                     plaintext overview
-GET /v1/meta                      live self-description: prices, tiers, auditable DIY math
+GET /v1/meta                      live self-description: free-data policy, tiers, auditable DIY math
 GET /v1/insider/sample            free full-schema proof (SEC Form 4)
 GET /v1/signals/sample            free full-schema proof (cross-source signals)
 GET /openapi.json                 machine schema
 ```
 
-Call any paid endpoint bare → HTTP 402 carries the x402 payment demand → reply with a signed
-USDC payment on Base. No accounts, no API keys, no signup. Empty results and errors are always
-free — payment is only demanded when a non-empty result is already in hand.
+All data endpoints are **free** — just GET them, no accounts, no API keys, no signup. The one
+paid product is the **Watch retainer** (prepaid proactive monitoring, `POST /v1/watch/subscribe`):
+POST it bare → HTTP 402 carries the x402 payment demand → reply with a signed USDC payment on
+Base. Empty/unresolvable watchlists and errors are always free.
 
 ## Products
 
@@ -35,19 +35,20 @@ free — payment is only demanded when a non-empty result is already in hand.
 
 Every record carries a `source_url` back to the primary government source. Check our work.
 
-## The pricing invariant
+## The pricing policy
 
-Prices step **down** on a published cadence as settled purchases accumulate — schedule and
-live position at `/v1/meta → pricing_cadence`; every change is logged with its reasoning in
-[PRICING-CHANGELOG.md](PRICING-CHANGELOG.md).
+**The data is free.** Every on-request tier — `lookup`, `bulk`, `bulk/10k`, `by-date`, and all
+the `signals` endpoints — is served at no charge, to anyone. The one paid product is the **Watch
+retainer** (prepaid proactive monitoring — a service, not a data bundle). Policy changes are
+logged with their reasoning in [PRICING-CHANGELOG.md](PRICING-CHANGELOG.md).
 
-Every tier prices **provably below the buyer's own DIY inference cost** ($0.01 per filing on
-the cheapest capable model, inference + electricity, before edge-case engineering) and above the
-hard floor set by the payment facilitator's per-settlement fee. The multiples are recomputed live from
-current figures at `/v1/meta → diy_comparison` — the claim is auditable per call, not asserted.
-Honesty rules are structural: `direction: "context"` wherever a direction would be a guess,
-strength is an event-type prior (never a backtested score), conservative ticker attribution,
-and storefront claims are pinned to the payment constants by CI tests.
+What the free data is worth is still auditable: `/v1/meta → diy_comparison` recomputes live what
+it would cost you in inference ($0.01 per filing on the cheapest capable model, inference +
+electricity, before edge-case engineering) to reproduce our parse yourself — the inference you
+now avoid entirely. The running total the world has avoided: `/v1/compute-saved`. Honesty rules
+are structural: `direction: "context"` wherever a direction would be a guess, strength is an
+event-type prior (never a backtested score), conservative ticker attribution, and storefront
+claims are pinned to the code by CI tests.
 
 ## Architecture
 
@@ -94,5 +95,5 @@ Decoded in machine-readable form at `/v1/meta → principles`.
 
 ## License
 
-MIT. The data itself is U.S.-government public domain — it was never ours to license.
-We sell data, not advice.
+MIT. The data itself is U.S.-government public domain — it was never ours to license, so we
+give it away. We serve data, not advice.

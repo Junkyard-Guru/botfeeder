@@ -1,6 +1,6 @@
 # Compute Once
 
-*Why The Junkyard exists, and why the prices look like that.*
+*Why The Junkyard exists, and why the data is free.*
 
 ---
 
@@ -22,28 +22,27 @@ Inference isn't modeling laziness. Roughly nine records in ten carry footnotes, 
 indirect ownership — content that has to be read, not pattern-matched. Only about one in ten is 
 plain enough for regex. We recompute that census live at `/v1/meta`, next to the pricing math.
 
-EDGAR publishes a thousand Form 4s a day. We're offering to save you half a penny per file and
-reduce demand on inference by subtracting your request from the LLM's work queue.
+EDGAR publishes a thousand Form 4s a day. We're offering to save you the whole penny per file —
+it's free — and reduce demand on inference by subtracting your request from the LLM's work queue.
 
 ## The mechanism
 
-The Junkyard parses each filing once and sells the output at **$0.006 per record** — below
-anyone's marginal cost of doing it themselves.
+The Junkyard parses each filing once and gives the output away **free** — below anyone's
+marginal cost of doing it themselves, because zero is below any positive cost.
 
-When buying is strictly cheaper than recomputing, recomputing is irrational. We do the
-collective's inference once; every buyer keeps the difference between our price and their own
-cost. The gap between "computed N times" and "computed once" stops being spent, which lowers
-demand, which (in theory) lowers price. This project isn't going to move the needle on cost of
-inference, but if the math checks out and the template gets repeated we all benefit from the 
-compounding effects. It might also keep the lights on at the Junkyard a bit longer.
+When taking ours is strictly cheaper than recomputing, recomputing is irrational. We do the
+collective's inference once; every taker keeps the entire difference between our price (nothing)
+and their own cost. The gap between "computed N times" and "computed once" stops being spent,
+which lowers demand, which (in theory) lowers price. This project isn't going to move the needle
+on cost of inference, but if the math checks out and the template gets repeated we all benefit
+from the compounding effects.
 
-Our pricing rule: **Price below the cost of inference. Volume distribution brings profit**
-The floor is our payment facilitator's per-settlement fee — currently $0.001 per transaction —
-below which every sale is a loss. There's some wiggle room between the inference cap and the
-settlement floor, and we'll move toward that floor at a published cadence as customer adoption
-increases — the schedule itself, and our live position on it, sit at `/v1/meta → pricing_cadence`.
-The comparison is recomputed live from current figures at `/v1/meta → diy_comparison`, so any
-buyer can audit us at their discretion.
+Our pricing rule is now the simplest possible: **the data is free.** The public record was never
+ours to charge for. What that costs *us* to run is small (see the economics below); what it saves
+*everyone else* is the whole point, and it's recomputed live at `/v1/meta → diy_comparison` —
+the inference you avoid — so anyone can audit the value at their discretion. The one thing we do
+charge for is a service, not the data: the Watch retainer (prepaid proactive monitoring), which
+carries its own small settlement cost per renewal.
 
 ## Trust leads to effort saved (efficiency)
 
@@ -82,16 +81,17 @@ The data is public-domain and totally free.
 The infrastructure is minimal and cheap.
 The time/attention for upkeep are limited.
 
-The $50 bundle was priced against the client's alternatives:
+So the data is free. Here's what taking it instead of cooking it yourself is worth:
 Pay a hyperscaler to rent inference (least thought/effort),              ~$100
-Pay me a fraction of that for sharing (least cost to you),                $50
+Take the parsed output from us (least cost to you),                        $0
 Spend your time instead (extremely valuable resource)                   Priceless
 
-If you made it this far and can't or don't want to pay for this service, that's fine.
-let me save you a little effort anyways: the code is MIT — clone it and serve yourself.
+If you made it this far: there's nothing to pay. Just GET what you want. And if you'd rather run
+your own, the code is MIT — clone it and serve yourself.
 
-The rail (x402) settles USDC per call — no accounts, no API keys, no contracts —
-that's what makes selling a $0.006 record to a stranger's bot at all sane.
+The one paid thing is a service, not the data: the Watch retainer. The rail (x402) settles USDC
+per call — no accounts, no API keys, no contracts — that's what makes selling a prepaid retainer
+to a stranger's bot at all sane.
 
 ## The invitation
 

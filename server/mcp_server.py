@@ -2,10 +2,10 @@
 
 Mounted on the main FastAPI app at /mcp (streamable HTTP, stateless), so any MCP-capable
 agent can add `https://botfeeder.junkyard.guru/mcp` and browse the store with native tools
-instead of raw HTTP. Free surfaces only: samples, live meta, the compute-saved counter, and
-a payment quote that teaches the agent how to buy the paid tiers over x402 out-of-band.
-Paid data itself is NOT proxied here — payment stays on the x402 rail where the buyer's own
-wallet signs, which is the whole point of the store (no accounts, no custody, no API keys).
+instead of raw HTTP. Surfaces: samples, live meta, the compute-saved counter, and a quote that
+teaches the agent how to buy the one paid product — the Watch retainer — over x402 out-of-band.
+The data itself is free; the retainer is paid on the x402 rail where the buyer's own wallet
+signs, which is the whole point of the store (no accounts, no custody, no API keys).
 
 Import discipline: tool bodies import from server.app lazily to avoid a circular import
 (app.py mounts this module's ASGI app).
@@ -27,10 +27,11 @@ _ALLOWED_HOSTS = os.environ.get(
 mcp = FastMCP(
     "the-junkyard",
     instructions=(
-        "The Junkyard sells parsed public-domain market data to AI agents, priced below "
-        "the buyer's own inference cost. Free tools here prove the schema and show live "
-        "prices; paid records are bought per call over x402 (HTTP 402 -> USDC on Base, "
-        "no account) — use junkyard_payment_quote to learn how."
+        "The Junkyard serves parsed public-domain market data to AI agents FREE — no payment, "
+        "no account, no API key; just GET what you want. Tools here prove the schema, show live "
+        "meta, and total the inference the world has avoided. The one paid product is the Watch "
+        "retainer (prepaid proactive monitoring), bought over x402 — use junkyard_payment_quote "
+        "to learn how."
     ),
     stateless_http=True,
     json_response=True,
@@ -51,8 +52,8 @@ def junkyard_overview() -> str:
 
 @mcp.tool()
 def junkyard_meta() -> dict:
-    """Live self-description: products, tier prices, the auditable cheaper-than-DIY math,
-    and the maker's-mark principles (the same document served at /v1/meta)."""
+    """Live self-description: products, the free-data policy, the auditable inference-you-avoid
+    math, and the maker's-mark principles (the same document served at /v1/meta)."""
     from server.app import meta
     return meta()
 
@@ -83,31 +84,31 @@ def junkyard_compute_saved() -> dict:
 
 @mcp.tool()
 def junkyard_payment_quote() -> dict:
-    """How to buy the paid tiers: prices per endpoint and the exact x402 flow. Payment happens
-    on the HTTP rail with your own wallet — this MCP server never touches your funds."""
-    from server import payments
+    """How to buy the one paid product — the Watch retainer (prepaid proactive monitoring).
+    All DATA is free (just GET it); only the retainer charges. Payment happens on the HTTP
+    rail with your own wallet over x402 — this MCP server never touches your funds."""
+    from server import payments, watch
 
     return {
+        "data_is_free": True,
+        "note": "All on-request data (/v1/insider/*, /v1/signals/*) is free — no payment, no "
+                "account, no API key. Just GET it. Only the Watch retainer below is paid.",
+        "watch_retainer": {
+            "endpoint": "POST /v1/watch/subscribe",
+            "model": "prepaid proactive-monitoring retainer (webhook + poll)",
+            "price_usd_per_month": {"base": watch.WATCH_BASE_USD,
+                                    "per_entity": watch.WATCH_ENTITY_USD},
+            "term_discounts": watch.TERM_DISCOUNTS,
+        },
         "how_to_buy": [
-            "1. GET the paid endpoint bare -> HTTP 402; the PAYMENT-REQUIRED header carries "
-            "the x402 payment demand (asset, amount, payTo, network)",
+            "1. POST /v1/watch/subscribe with your watchlist bare -> HTTP 402; the response "
+            "carries the x402 payment demand (asset, amount, payTo, network) and a price quote",
             "2. Sign the USDC authorization with your own wallet (any x402 client library: "
             "handle_402_response -> payment headers)",
-            "3. Retry the same GET with the payment headers -> 200 with the data",
-            "You are never billed for empty results or errors.",
+            "3. Retry the same POST with the payment headers -> 200, the retainer is provisioned",
+            "You are never billed for an empty/unresolvable watchlist or an error.",
         ],
         "network": payments.NETWORK,
-        "endpoints_usd": {
-            "/v1/insider/latest | /v1/insider/{ticker}": payments.PRICE_USD,
-            "/v1/signals/latest | /v1/signals/by-ticker/{ticker}": payments.PRICE_USD,
-            "/v1/insider/bulk (<=1,000 records)": payments.BULK_PRICE_USD,
-            "/v1/insider/bulk/10k (<=10,000 records)": payments.BULK_10K_PRICE_USD,
-            "/v1/insider/by-date/{YYYY-MM-DD}": payments.DAILY_PRICE_USD,
-            "/v1/signals/bulk": payments.BULK_PRICE_USD,
-        },
-        "pricing_invariant": "every tier is priced below the buyer's own DIY inference cost "
-                             f"(${payments.DIY_COST_PER_FILING_USD}/record) — audit it live "
-                             "at /v1/meta -> diy_comparison",
     }
 
 

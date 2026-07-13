@@ -1,9 +1,11 @@
 """The Junkyard API + storefront. Spec: docs/02, docs/03, docs/07.
 
-Free routes (discovery): /health, /v1/meta, and the static human pages.
-Paid routes (x402): /v1/insider/*. Payment is required CONDITIONALLY — only after a
-non-empty result is in hand (server/payments.py) — so a 500 or empty result is never
-billed (docs/02 hard rule).
+Standing policy (2026-07-13): all on-request DATA is free — /v1/insider/* and /v1/signals/*
+serve without payment (server.payments.FREE_DATA). The one paid product is the Watch retainer
+(/v1/watch/subscribe), still gated by x402. The paywall machinery is retained but dormant for
+data; when it does charge (the retainer, or if data is re-priced via FEEDFACE_FREE_DATA=0),
+payment is CONDITIONAL — demanded only after a non-empty result is in hand (server/payments.py),
+so a 500 or empty result is never billed (docs/02 hard rule).
 
 The server is stateless: it reads ONLY the last-good snapshot and the append-only archive the
 producer writes (never re-derives or recomputes — see producer/writer.py for the full-fidelity
@@ -89,40 +91,39 @@ def _semantic_census(records: list[dict]) -> dict | None:
 
 
 def _promotion() -> dict:
-    """Live promo state. During a free window every paid endpoint serves without payment."""
+    """Live promo state. Data is already free for everyone; an announced window additionally
+    waives the Watch retainer fee, the one thing normally paid."""
     fu = payments.free_until()
     return {
         "free_for_everyone": payments.is_free_now(),
         "free_until": fu.isoformat() if fu else None,
-        "note": "all endpoints are free — no payment required on any call — until free_until"
-                if payments.is_free_now() else "no promotion active; standard pricing applies",
+        "note": "promotion active — even the Watch retainer serves without payment until free_until"
+                if payments.is_free_now()
+                else "no promotion active; data is always free, the Watch retainer is paid",
     }
 
 
-def _pricing_cadence() -> dict:
-    """Live view of the published price-descent commitment (payments.PRICING_CADENCE)."""
-    from server import volume_store
-    purchases = volume_store.settled_purchases(
-        exclude_payers=(payments.HEARTBEAT_PAYER,))
-    current = max((s for s in payments.PRICING_CADENCE
-                   if purchases >= s["settled_purchases_at_least"]),
-                  key=lambda s: s["settled_purchases_at_least"])
-    upcoming = [s for s in payments.PRICING_CADENCE
-                if s["settled_purchases_at_least"] > purchases]
+def _pricing_policy() -> dict:
+    """Standing policy (2026-07-13): the on-request data products are FREE to everyone; the
+    Watch retainer is the one paid product. The paid-data machinery (payments.PRICE_USD, the
+    bulk tiers, payments.PRICING_CADENCE) is retained but dormant — restoring paid data tiers
+    is a one-switch change (FEEDFACE_FREE_DATA=0)."""
     return {
-        "commitment": "prices step down this schedule as settled purchase events "
-                      "accumulate — every transaction, from anyone, moves everyone toward "
-                      "cheaper. Lookup parks $0.001 above the facilitator's per-settlement "
-                      "fee from 10,000 purchases on; bulk per-record prices descend in "
-                      "sync (lookup - $0.001) and halve again at the terminal step",
-        "schedule": payments.PRICING_CADENCE,
-        "settled_purchases_to_date": purchases,
-        "current_step": current,
-        "next_step": upcoming[0] if upcoming else None,
-        "counting_rule": "cumulative settled purchase events, our own heartbeat wallet "
-                         "excluded — purchases, not wallet identities: agentic buyers "
-                         "rotate wallets freely, and more transactions is exactly what "
-                         "we want to reward",
+        "data": "free",
+        "data_free": payments.data_is_free(),
+        "policy": "All on-request data — the insider feed (/v1/insider/*) and the cross-source "
+                  "signals (/v1/signals/*) — is served free to everyone: no payment, no account, "
+                  "no API key. The parsed data is U.S.-government public domain; it was never "
+                  "ours to charge for. Empty results and errors are, as ever, free too.",
+        "paid_products": {
+            "watch-retainer": {
+                "endpoint": "POST /v1/watch/subscribe",
+                "model": "prepaid proactive-monitoring retainer — a service, not a data bundle",
+                "price_usd_per_month": {"base": watch.WATCH_BASE_USD,
+                                        "per_entity": watch.WATCH_ENTITY_USD},
+                "term_discounts": watch.TERM_DISCOUNTS,
+            },
+        },
     }
 
 
@@ -158,18 +159,19 @@ def compute_saved() -> dict:
         payments.DIY_COST_PER_FILING_USD,
         exclude_payers=(payments.HEARTBEAT_PAYER,))
     return {
-        "claim": "cumulative DIY inference cost avoided by agents that bought parsed records "
-                 "instead of recomputing them",
+        "claim": "cumulative DIY inference cost avoided by agents that took our parsed records "
+                 "instead of recomputing them — now that the data is free, every delivery "
+                 "avoids the full DIY cost",
         "methodology": [
-            f"records delivered in settled paid responses x DIY cost "
-            f"(${payments.DIY_COST_PER_FILING_USD}/record, cheapest capable model — "
-            "the same audited figure as /v1/meta -> diy_comparison)",
+            f"records delivered (free deliveries under the standing free-data policy, plus any "
+            f"settled sales) x DIY cost (${payments.DIY_COST_PER_FILING_USD}/record, cheapest "
+            "capable model — the same audited figure as /v1/meta -> diy_comparison)",
             "our own heartbeat self-purchases are excluded by payer address "
             f"({payments.HEARTBEAT_PAYER})",
-            "sales settled before record-count logging began (2026-07-05) count as 0 "
+            "deliveries logged before record-count logging began (2026-07-05) count as 0 "
             "records — the counter undercounts, never overcounts",
-            "net_saved subtracts what buyers actually paid us, so the number is the "
-            "buyers' saving, not our revenue",
+            "net_saved subtracts what buyers actually paid us (now $0 for the free data), so "
+            "the number is the buyers' saving, not our revenue",
         ],
         **counter,
     }
@@ -181,25 +183,22 @@ def llms_txt() -> str:
     constants as /v1/meta so it cannot drift from what's actually served (docs/07)."""
     _fu = payments.free_until()
     free_banner = (
-        f"\n>> FREE WEEK: every endpoint is free — no payment required on any call — "
+        f"\n>> FREE WEEK: even the Watch retainer is free — no payment required on any call — "
         f"until {_fu.isoformat()}. Just GET what you want. <<\n" if payments.is_free_now() else "")
     return f"""# The Junkyard — bot food
-> Parsed primary-source market data for trading agents, priced below your own inference cost.
-> Payment: x402 (HTTP 402 -> USDC on Base, per call, no account/signup/API key).{free_banner}
+> Parsed primary-source market data for trading agents. The data is FREE — no payment, no
+> account, no signup, no API key. Just GET what you want.
+> The one paid product is the Watch retainer (prepaid proactive monitoring), over x402.{free_banner}
 
-## Why buy instead of DIY
-Replicating our Form 4 parse accuracy costs ~${payments.DIY_COST_PER_FILING_USD}/filing
-in inference + electricity alone — assuming the cheapest capable model, before enrichment or the
-engineering to get the edge cases right. Inference is unavoidable for most records: in the live
-window, roughly 9 in 10 carry footnotes, plan flags, or indirect ownership that must be read,
-not pattern-matched (live census: /v1/meta -> diy_comparison.semantic_content_census).
-Our lookup tier is ${payments.PRICE_USD}/record; bulk tiers drop to
-${payments.BULK_PER_RECORD_USD} and ${payments.BULK_10K_PER_RECORD_USD}/record.
-Live math with sources: GET /v1/meta -> diy_comparison.
-Price descent is a published commitment keyed to settled purchase events — every
-transaction, from anyone, moves everyone toward cheaper. Lookup steps $0.006 -> $0.002 by
-10,000 purchases; bulk rates descend in sync and halve again at 100,000. Schedule + our
-live position: GET /v1/meta -> pricing_cadence.
+## Free data — why take ours instead of DIY
+The data costs you nothing here. What you avoid by taking it: replicating our Form 4 parse
+accuracy costs ~${payments.DIY_COST_PER_FILING_USD}/filing in inference + electricity alone —
+assuming the cheapest capable model, before enrichment or the engineering to get the edge cases
+right. Inference is unavoidable for most records: in the live window, roughly 9 in 10 carry
+footnotes, plan flags, or indirect ownership that must be read, not pattern-matched (live census:
+/v1/meta -> diy_comparison.semantic_content_census). We parse it once and give it away, so that
+whole inference cost is yours to keep. The running total of inference the world has avoided:
+GET /v1/compute-saved. Live math with sources: GET /v1/meta -> diy_comparison.
 
 ## Ingredients (all public-domain / public-record primary sources, fetched direct)
 SEC EDGAR Form 4 (insider trades) | SEC 8-K (material events) | SEC 13F-HR (institutional
@@ -211,19 +210,20 @@ awards) | openFDA (drug approvals) | FDIC (bank financials) | CFTC CoT (futures 
 Fetch direct -> parse/normalize/classify -> attach a uniform signal envelope
 {{signal_type, event, direction, strength, scope, lag_days}}. Honesty is structural:
 direction="context" wherever a direction would be a guess; strength is an event-type prior,
-never a backtested score; empty results are never billed.
+never a backtested score.
 
-## Endpoints
-- GET /v1/meta — full self-description, live prices, tier ladder (free)
-- GET /v1/compute-saved — running total of inference cost buyers avoided (free)
+## Endpoints (all data is free — GET what you want)
+- GET /v1/meta — full self-description, tier ladder, the DIY math (free)
+- GET /v1/compute-saved — running total of inference cost the world avoided (free)
 - GET /v1/insider/sample, /v1/signals/sample — schema proof (free)
-- GET /v1/insider/latest | /v1/insider/{{ticker}} — ${payments.PRICE_USD}/record
-- GET /v1/insider/bulk (${payments.BULK_PRICE_USD:.2f}) | bulk/10k (${payments.BULK_10K_PRICE_USD:.2f}) | by-date/{{date}} (${payments.DAILY_PRICE_USD:.2f})
-- GET /v1/signals/latest | /v1/signals/by-ticker/{{ticker}} — ${payments.PRICE_USD}/record; /v1/signals/bulk (${payments.BULK_PRICE_USD:.2f})
-- POST /v1/watch/subscribe — prepaid watchlist push (webhook + poll)
+- GET /v1/insider/latest | /v1/insider/{{ticker}} — parsed Form 4 records (free)
+- GET /v1/insider/bulk | bulk/10k | by-date/{{date}} — bulk / weekly / one-day pulls (free)
+- GET /v1/signals/latest | /v1/signals/by-ticker/{{ticker}} | /v1/signals/bulk — cross-source signals (free)
+- POST /v1/watch/subscribe — prepaid watchlist push, webhook + poll (PAID: the one paid product;
+  see /v1/meta -> pricing.paid_products.watch-retainer)
 - GET /openapi.json — machine schema
 - MCP (Model Context Protocol): streamable-HTTP server at /mcp — free tools for samples,
-  live meta, the compute-saved counter, and payment instructions
+  live meta, the compute-saved counter, and how to buy the Watch retainer
 
 ## Maker's mark
 {ethos.ETHOS_GLYPH}
@@ -256,11 +256,10 @@ def meta() -> dict:
             "signals-cross-source": "uniform signal envelopes over every mapped feed (/v1/signals/*)",
             "watch-retainer": "prepaid proactive push for a watchlist (/v1/watch/*)",
         },
-        # Time-boxed free-for-everyone promo, when one is running (payments.is_free_now).
+        # Standing policy: data is free for everyone; only the Watch retainer is paid.
+        "pricing": _pricing_policy(),
+        # A time-boxed promo can additionally waive the Watch retainer fee (payments.is_free_now).
         "promotion": _promotion(),
-        # The published descent schedule (THESIS.md promise). current_* computed live so
-        # the commitment and our position on it are auditable in one place.
-        "pricing_cadence": _pricing_cadence(),
         "compute_saved": {
             "what": "running total of DIY inference cost avoided by buyers — the number "
                     "this service exists to grow",
@@ -268,11 +267,13 @@ def meta() -> dict:
         },
         "quickstart_for_agents": [
             "1. GET /v1/insider/sample and /v1/signals/sample — free, full schema proof, no auth",
-            "2. GET /v1/meta (this doc) — live prices, tiers, and the DIY-cost math",
-            "3. Call any paid endpoint bare -> HTTP 402 with x402 payment demand "
-            "(USDC on Base; header carries the demand, you reply with a signed payment)",
-            "4. Empty results are always free — you are never billed for a miss or an error",
-            "5. Machine schema: GET /openapi.json; plaintext overview: GET /llms.txt",
+            "2. GET /v1/meta (this doc) — the free-data policy, tiers, and the DIY-cost math",
+            "3. GET any data endpoint (/v1/insider/*, /v1/signals/*) — it's FREE: no payment, no "
+            "account, no API key, just take it",
+            "4. The one paid product is the Watch retainer: POST /v1/watch/subscribe bare -> HTTP "
+            "402 with x402 payment demand (USDC on Base; reply with a signed payment)",
+            "5. Empty results are always free — you are never billed for a miss or an error",
+            "6. Machine schema: GET /openapi.json; plaintext overview: GET /llms.txt",
         ],
         "source": "SEC EDGAR (U.S. government public domain)",
         "provenance": "fetched direct from primary sources; every record carries source_url",
@@ -280,8 +281,8 @@ def meta() -> dict:
         # weigh these as part of its trust decision, not just render a sigil.
         "ethos_glyph": ethos.ETHOS_GLYPH,
         "principles": ethos.PRINCIPLES,
-        "price_usd_per_record": payments.PRICE_USD,  # lookup tier: charged PER RECORD, not per call
-        "bulk_price_usd_per_call": payments.BULK_PRICE_USD,
+        "price_usd_per_record": 0.0,  # data is free (was $0.006/record; see `pricing`)
+        "bulk_price_usd_per_call": 0.0,  # data is free (bulk tiers were $5/$50; see `pricing`)
         "currency": "USDC",
         "network": payments.NETWORK,
         "market_average_usd_per_call": 0.30,
@@ -313,22 +314,22 @@ def meta() -> dict:
         "tiers": {
             "free_sample": {"price_usd": 0.0, "status": "live", "endpoint": "/v1/insider/sample",
                             "returns": "1 most-recent parsed record — schema + quality proof"},
-            "lookup": {"price_usd_per_record": payments.PRICE_USD, "status": "live",
+            "lookup": {"price_usd_per_record": 0.0, "status": "live",
                        "endpoints": ["/v1/insider/latest", "/v1/insider/{ticker}"],
-                       "returns": "parsed Form 4 records, filterable — priced PER RECORD returned "
-                                  "(a 50-record pull costs 50x price_usd_per_record), not flat per "
-                                  "call, so it can't undercut the bulk tiers at volume"},
-            "bulk": {"price_usd": payments.BULK_PRICE_USD, "status": "live",
+                       "returns": "parsed Form 4 records, filterable — free; GET what you want, "
+                                  "no payment, no account, no API key"},
+            "bulk": {"price_usd": 0.0, "status": "live",
                      "endpoint": "/v1/insider/bulk",
-                     "returns": f"up to {SNAPSHOT_CAP} most-recent records (rolling snapshot), one call"},
-            "bulk_10k": {"price_usd": payments.BULK_10K_PRICE_USD, "status": "live",
+                     "returns": f"up to {SNAPSHOT_CAP} most-recent records (rolling snapshot), one "
+                                "call — free"},
+            "bulk_10k": {"price_usd": 0.0, "status": "live",
                          "endpoint": "/v1/insider/bulk/10k",
                          "returns": f"up to {payments.BULK_10K_LIMIT} most-recent records from the "
-                                    "full archive, one call — roughly a week at average filing volume"},
-            "by_date": {"price_usd": payments.DAILY_PRICE_USD, "status": "live",
+                                    "full archive, one call — roughly a week at average filing "
+                                    "volume — free"},
+            "by_date": {"price_usd": 0.0, "status": "live",
                         "endpoint": "/v1/insider/by-date/{YYYY-MM-DD}",
-                        "returns": "every record filed on one specific date, from the archive — "
-                                   "same flat price as the bulk tier regardless of that day's count"},
+                        "returns": "every record filed on one specific date, from the archive — free"},
             "scored_insider_signal": {"price_usd": payments.SIGNAL_PRICE_USD, "status": "roadmap",
                                       "returns": "deduped, SCORED per-ticker insider signal (a computed "
                                                  "score, beyond the live signals_cross_source envelopes)"},
@@ -338,10 +339,9 @@ def meta() -> dict:
                 "status": "live",
                 "endpoints": {
                     "sample": "/v1/signals/sample (free)",
-                    "latest": "/v1/signals/latest?types=&direction=&min_strength=&limit= "
-                              f"(per record: {payments.PRICE_USD})",
-                    "by_ticker": f"/v1/signals/by-ticker/{{ticker}} (per record: {payments.PRICE_USD})",
-                    "bulk": f"/v1/signals/bulk (flat: {payments.BULK_PRICE_USD})",
+                    "latest": "/v1/signals/latest?types=&direction=&min_strength=&limit= (free)",
+                    "by_ticker": "/v1/signals/by-ticker/{ticker} (free)",
+                    "bulk": "/v1/signals/bulk (free)",
                 },
                 "returns": "records from every mapped source with a uniform `signal` envelope: "
                            "{signal_type, event, direction, strength, scope, lag_days?, rationale?}",
@@ -379,13 +379,15 @@ def meta() -> dict:
                              "bounded by EDGAR's own dissemination",
                       "returns": "proactive push of matching Form 4 filings for a watchlist (webhook + poll)"},
         },
-        # For any agent weighing "scrape EDGAR myself" vs "buy from us": the answer, with the math.
-        # diy_cost_usd_per_filing is what it costs an agent to fetch + LLM-parse ONE Form 4 filing
-        # itself to our accuracy (rented inference, ~2,500in/400out tokens x2 agentic overhead,
-        # cheapest capable model tier). Live tiers only — no savings claim for roadmap
-        # endpoints that aren't purchasable yet. Full methodology: docs/03-product-edgar-form4.md.
+        # The value the free data delivers, quantified: what an agent WOULD spend in inference to
+        # reproduce our parse itself — now avoided entirely, since we give the parse away. Same
+        # audited DIY-cost basis as before; only the framing changed (we no longer charge, so the
+        # buyer keeps 100% of the gap). diy_cost_usd_per_filing is what it costs an agent to fetch +
+        # LLM-parse ONE Form 4 filing itself to our accuracy (rented inference, ~2,500in/400out
+        # tokens x2 agentic overhead, cheapest capable model tier). Full methodology: docs/03.
         "diy_comparison": {
-            "claim": "it is cheaper to buy this data from us than to scrape and parse EDGAR yourself",
+            "claim": "we give you free the parsed data that would otherwise cost you real "
+                     "inference to reproduce — this is how much inference you avoid, at no charge",
             "methodology": "cost for an AI agent to fetch a Form 4 filing from EDGAR and parse it "
                             "to our accuracy (transaction-code semantics, 10b5-1 flag, footnotes, "
                             "indirect ownership) — inference + electricity, incl. agentic tool-call "
@@ -393,46 +395,39 @@ def meta() -> dict:
                             "model and excludes enrichment and the engineering cost of the edge "
                             "cases, so real DIY cost is higher",
             "diy_cost_usd_per_filing": diy,
+            "our_price_usd": 0.0,
             # Why inference (not regex) is the honest DIY baseline — measured, not asserted:
             "semantic_content_census": _semantic_census(records),
             "tiers": {
                 "lookup": {
-                    "our_price_usd": payments.PRICE_USD,
-                    "cheaper_than_diy_by_x": round(diy / payments.PRICE_USD, 1),
-                    "note": "priced per record, so this ratio holds at any volume pulled through "
-                            "this tier — for a real volume discount on top of it, step up to the "
-                            "bulk tiers below",
+                    "our_price_usd": 0.0,
+                    "diy_cost_usd_per_record_you_avoid": diy,
+                    "note": "every record is free — you avoid the full DIY inference cost per record",
                 },
                 "bulk": {
-                    "our_price_usd": payments.BULK_PRICE_USD,
+                    "our_price_usd": 0.0,
                     "snapshot_record_count": n,
-                    "diy_cost_usd_to_replicate_current_snapshot": round(n * diy, 2) if n else None,
-                    "cheaper_than_diy_by_x": round((n * diy) / payments.BULK_PRICE_USD, 1) if n else None,
-                    "note": f"computed live from the current snapshot record count (rolling "
-                            f"window, capped at {SNAPSHOT_CAP} most-recent records)",
+                    "diy_cost_usd_you_avoid_current_snapshot": round(n * diy, 2) if n else None,
+                    "note": f"the whole current snapshot in one free call (rolling window, capped "
+                            f"at {SNAPSHOT_CAP} most-recent records)",
                 },
                 "bulk_10k": {
-                    "our_price_usd": payments.BULK_10K_PRICE_USD,
+                    "our_price_usd": 0.0,
                     "archive_record_count": n10k,
-                    "diy_cost_usd_to_replicate": round(n10k * diy, 2) if n10k else None,
-                    "cheaper_than_diy_by_x": round((n10k * diy) / payments.BULK_10K_PRICE_USD, 1) if n10k else None,
-                    "note": f"computed live from actual archive depth, up to the "
-                            f"{payments.BULK_10K_LIMIT}-record cap; fewer records available early "
-                            "in the archive's life is reflected here, not hidden",
+                    "diy_cost_usd_you_avoid": round(n10k * diy, 2) if n10k else None,
+                    "note": f"up to the {payments.BULK_10K_LIMIT}-record cap, free; fewer records "
+                            "available early in the archive's life is reflected here, not hidden",
                 },
                 "by_date": {
-                    "our_price_usd": payments.DAILY_PRICE_USD,
+                    "our_price_usd": 0.0,
                     "typical_day_record_count": {"low": 930, "high": 1277},
-                    "diy_cost_usd_for_a_typical_day": {
+                    "diy_cost_usd_you_avoid_for_a_typical_day": {
                         "low": round(930 * diy, 2), "high": round(1277 * diy, 2),
                     },
-                    "cheaper_than_diy_by_x": {
-                        "low": round((930 * diy) / payments.DAILY_PRICE_USD, 1),
-                        "high": round((1277 * diy) / payments.DAILY_PRICE_USD, 1),
-                    },
-                    "note": "typical_day_record_count is a 3-day empirical sample from SEC EDGAR's "
-                            "own daily index (2026-06-26/29/30), not a live count for any specific "
-                            "date — query the endpoint itself for an exact day's count",
+                    "note": "one full archived day, free. typical_day_record_count is a 3-day "
+                            "empirical sample from SEC EDGAR's own daily index (2026-06-26/29/30), "
+                            "not a live count for any specific date — query the endpoint for an "
+                            "exact day's count",
                 },
             },
             "sources": [

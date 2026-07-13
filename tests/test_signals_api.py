@@ -89,9 +89,17 @@ def test_by_ticker_unknown_is_free_empty():
     assert r.json()["count"] == 0
 
 
-def test_empty_results_never_billed_with_x402_on(monkeypatch):
+def test_signals_are_free_and_empty_never_billed_with_x402_on(monkeypatch):
     monkeypatch.setattr(payments, "MODE", "trust")
     assert client.get("/v1/signals/by-ticker/ZZZZ").status_code == 200  # empty -> free
+    assert client.get("/v1/signals/latest").status_code == 200          # data -> free (standing policy)
+
+
+def test_signals_paywall_re_engages_when_free_data_off(monkeypatch):
+    """Reversibility guard: with FREE_DATA off, a data-bearing signals request paywalls again."""
+    monkeypatch.setattr(payments, "MODE", "trust")
+    monkeypatch.setattr(payments, "FREE_DATA", False)
+    assert client.get("/v1/signals/by-ticker/ZZZZ").status_code == 200  # empty still free
     assert client.get("/v1/signals/latest").status_code == 402          # data -> paywalled
 
 

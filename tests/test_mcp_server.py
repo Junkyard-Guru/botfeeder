@@ -56,7 +56,7 @@ def test_mcp_lists_free_tools_only(client):
     }
 
 
-def test_mcp_payment_quote_tool_returns_prices(client):
+def test_mcp_payment_quote_tool_returns_watch_pricing(client):
     _initialize(client)
     r = _rpc(client, "tools/call",
              {"name": "junkyard_payment_quote", "arguments": {}}, id_=3)
@@ -65,7 +65,9 @@ def test_mcp_payment_quote_tool_returns_prices(client):
     text = " ".join(c.get("text", "") for c in content)
     payload = json.loads(text)
     assert payload["network"]
-    assert any(v == 0.006 for v in payload["endpoints_usd"].values())
+    assert payload["data_is_free"] is True
+    # the one paid product is the watch retainer, with its per-month pricing
+    assert "price_usd_per_month" in payload["watch_retainer"]
     assert "402" in " ".join(payload["how_to_buy"])
 
 

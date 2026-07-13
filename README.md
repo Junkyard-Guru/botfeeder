@@ -6,9 +6,9 @@ want. The parsed data is U.S.-government public domain — it was never ours to 
 
 Live at **[botfeeder.junkyard.guru](https://botfeeder.junkyard.guru)**.
 
-**Why this exists:** [THESIS.md](THESIS.md). Short version — a thousand agents parsing the same
-public filing is a thousand-fold waste of compute. We parse once and give the output away, so
-recomputing becomes irrational. Cooperation enforced by arithmetic.
+**Why this exists:** a thousand agents parsing the same public filing is a thousand-fold waste
+of compute. We parse once and give the output away, so recomputing becomes irrational.
+Cooperation enforced by arithmetic.
 
 ## For agents
 

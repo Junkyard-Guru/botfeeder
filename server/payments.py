@@ -115,8 +115,8 @@ WALLET = os.environ.get("FEEDFACE_WALLET", "")          # PUBLIC receiving addre
 HEARTBEAT_PAYER = os.environ.get(
     "FEEDFACE_HEARTBEAT_PAYER", "0xE60883cBF7C2a61B2edE7296D75b89542A286422")
 
-# The published price-descent cadence (THESIS.md: "we'll move toward that floor at a
-# published cadence as customers increase"). Steps key on cumulative SETTLED PURCHASE
+# The price-descent cadence (dormant under the free-data policy — retained for reversibility).
+# When active, steps key on cumulative SETTLED PURCHASE
 # EVENTS (heartbeat excluded — same honesty rule as the compute-saved counter). Purchases,
 # not wallets: our customers are agentic workers whose wallet identity is a string of code
 # that rotates freely, so counting identities is a meaningless speed bump — counting
